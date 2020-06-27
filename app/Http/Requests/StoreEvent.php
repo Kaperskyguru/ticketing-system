@@ -13,7 +13,7 @@ class StoreEvent extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,10 @@ class StoreEvent extends FormRequest
     public function rules()
     {
         return [
-            //
+            'title' => ['bail', 'string', 'required'],
+            'description' => ['bail', 'string', 'required'],
+            'ticket_price' => ['bail', 'float', 'required'],
+            'event_date' => ['bail', 'date', 'required', 'after_or_equal:today'],
         ];
     }
 }
