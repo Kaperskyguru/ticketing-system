@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreEvent extends FormRequest
+class StoreTicket extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,10 +24,9 @@ class StoreEvent extends FormRequest
     public function rules()
     {
         return [
-            'title' => ['bail', 'string', 'required'],
-            'description' => ['bail', 'string', 'required'],
-            'ticket_price' => ['bail', 'numeric', 'required'],
-            'event_date' => ['bail', 'date', 'required', 'after_or_equal:today'],
+            'event_id' => ['required', 'exists:App\Event,id'],
+            'user_id' => ['required', 'exists:App\User,id'],
+            'amount' => ['required', 'float']
         ];
     }
 }

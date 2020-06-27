@@ -5,8 +5,13 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Event;
 use App\Http\Requests\StoreEvent;
+use App\Http\Requests\StoreTicket;
+use App\Http\Requests\StoreUserEvent;
 use App\Http\Resources\EventResource;
+use App\Ticket;
+use App\UserEvent;
 use Illuminate\Support\Facades\Cache;
+use Keygen\Keygen;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class EventController extends Controller
@@ -24,7 +29,7 @@ class EventController extends Controller
         $size = $request->has('size') ? $request->query('size') : 10;
 
         $events = Cache::remember('events_page_' . $page, $this->duration, function () use ($size) {
-            $data = Event::with('tickets')->latest()->paginate($size);
+            $data = Event::with('')->latest()->paginate($size);
             if ($data->items())
                 return $data;
             return null;
@@ -131,5 +136,61 @@ class EventController extends Controller
         return response()->json([
             'message' => 'Event not found',
         ], 404);
+    }
+
+    public function buy(StoreTicket $request, $user)
+    {
+
+        $ticket = new Ticket();
+        $ticket->user_id = $user;
+        $ticket->event_id = $request->event_id;
+        $ticket->amount = $request->amount;
+        $ticket->code = Keygen::numeric(5)->prefix(mt_rand(1, 9))->generate(true);;
+
+        if ($ticket->save()) {
+            // Send User Email, Send Code
+
+            return response()->json([
+                'message' => 'Payment for event with id ' . $request->event_id . ' was successful',
+            ], 200);
+        }
+
+        return response()->json([
+            'message' => 'Internal Server Error, Please try again',
+        ], 500);
+    }
+
+    public function join(StoreUserEvent $request, $user)
+    {
+
+        // Check if user already join event
+        $event = $request->event_id;
+        $ticket = Ticket::where('user_id', $user)->where('code', $request->code)->where('event_id', $event)->first();
+
+        if (!$ticket) {
+            // Throw Ticket not found exception
+            return response()->json([
+                'message' => 'Ticket code not valid',
+            ], 404);
+        }
+
+        if ($ticket->is_used && $ticket->date_used->isPast()) {
+            // throw Used_ticket_Error
+            return response()->json([
+                'message' => 'Ticket already used',
+            ], 404);
+        }
+
+        $joinEvent = new UserEvent;
+        $joinEvent->user_id = $user;
+        $joinEvent->event_id = $event;
+
+        if ($joinEvent->save()) {
+            // Send Success Email
+        }
+
+        return response()->json([
+            'message' => 'Internal Server Error, Please try again',
+        ], 500);
     }
 }

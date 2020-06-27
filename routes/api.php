@@ -17,3 +17,13 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+
+Route::group(['prefix' => 'v1'], function () {
+    Route::post('events', 'EventController@store');
+
+    Route::resource('events', "EventController");
+
+    // Route::group(['prefix' => 'auth'], function () {
+    // });
+});
