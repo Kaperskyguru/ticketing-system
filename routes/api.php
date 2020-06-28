@@ -20,9 +20,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 
 Route::group(['prefix' => 'v1'], function () {
-    Route::post('events', 'EventController@store');
 
     Route::resource('events', "EventController");
+    Route::post('events/{id}/ticket', "EventController@buy");
+    Route::post('events/{id}/join', "EventController@join");
 
     // Route::group(['prefix' => 'auth'], function () {
     // });

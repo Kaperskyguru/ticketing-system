@@ -24,9 +24,8 @@ class StoreTicket extends FormRequest
     public function rules()
     {
         return [
-            'event_id' => ['required', 'exists:App\Event,id'],
             'user_id' => ['required', 'exists:App\User,id'],
-            'amount' => ['required', 'float']
+            'amount' => ['required', 'numeric']
         ];
     }
 }

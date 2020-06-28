@@ -27,7 +27,7 @@ class StoreEvent extends FormRequest
             'title' => ['bail', 'string', 'required'],
             'description' => ['bail', 'string', 'required'],
             'ticket_price' => ['bail', 'numeric', 'required'],
-            'event_date' => ['bail', 'date', 'required', 'after_or_equal:today'],
+            'date' => ['bail', 'date', 'required', 'after_or_equal:today'],
         ];
     }
 }

@@ -8,7 +8,9 @@ use App\Http\Requests\StoreEvent;
 use App\Http\Requests\StoreTicket;
 use App\Http\Requests\StoreUserEvent;
 use App\Http\Resources\EventResource;
+use App\Notifications\TicketNotification;
 use App\Ticket;
+use App\User;
 use App\UserEvent;
 use Illuminate\Support\Facades\Cache;
 use Keygen\Keygen;
@@ -29,7 +31,7 @@ class EventController extends Controller
         $size = $request->has('size') ? $request->query('size') : 10;
 
         $events = Cache::remember('events_page_' . $page, $this->duration, function () use ($size) {
-            $data = Event::with('')->latest()->paginate($size);
+            $data = Event::latest()->paginate($size);
             if ($data->items())
                 return $data;
             return null;
@@ -57,8 +59,8 @@ class EventController extends Controller
             return new EventResource($event);
         }
         return response()->json([
-            'message' => 'Event not created',
-        ], 422);
+            'message' => 'Internal Server Error',
+        ], 500);
     }
 
     /**
@@ -69,16 +71,8 @@ class EventController extends Controller
      */
     public function show($id)
     {
-        $cachedEvent = Cache::remember('event_id_' . $id, $this->duration, function () use ($id) {
-            return Event::with('tickets')->find($id);
-        });
-
-        if ($cachedEvent) {
-            return new EventResource($cachedEvent);
-        }
-        return response()->json([
-            'message' => 'Event not found',
-        ], 404);
+        $cachedEvent = $this->findEvent($id);
+        return new EventResource($cachedEvent);
     }
 
     /**
@@ -90,26 +84,16 @@ class EventController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $cachedEvent = Cache::remember('event' . '_id_' . $id, $this->duration, function () use ($id) {
-            return Event::find($id);
-        });
-
-        if (!$cachedEvent) {
-            throw new NotFoundHttpException();
-        }
+        $cachedEvent = $this->findEvent($id);
 
         if ($cachedEvent->update($request->all())) {
             if (Cache::has('event' . '_id_' . $id)) {
                 Cache::forget('event' . '_id_' . $id);
             }
 
-            $cachedEvent = Cache::put('event' . '_id_' . $cachedEvent->id, $cachedEvent, $this->duration);
-
+            $cachedEvent = $this->findEvent($id);
             return new EventResource($cachedEvent);
         }
-        return response()->json([
-            'message' => 'Event not found',
-        ], 404);
     }
 
     /**
@@ -120,9 +104,7 @@ class EventController extends Controller
      */
     public function destroy($id)
     {
-        $cachedEvent = Cache::remember('event' . '_id_' . $id, $this->duration, function () use ($id) {
-            return Event::find($id);
-        });
+        $cachedEvent = $this->findEvent($id);
 
         if (!$cachedEvent && $cachedEvent->delete()) {
             if (Cache::has('event' . '_id_' . $id)) {
@@ -138,20 +120,26 @@ class EventController extends Controller
         ], 404);
     }
 
-    public function buy(StoreTicket $request, $user)
+    public function buy(StoreTicket $request, $id)
     {
+        // Find Event
+        $event = $this->findEvent($id);
+
+        // Check if user
 
         $ticket = new Ticket();
-        $ticket->user_id = $user;
-        $ticket->event_id = $request->event_id;
+        $ticket->user_id = $request->user_id;
+        $ticket->event_id = $event->id;
         $ticket->amount = $request->amount;
         $ticket->code = Keygen::numeric(5)->prefix(mt_rand(1, 9))->generate(true);;
 
         if ($ticket->save()) {
             // Send User Email, Send Code
+            $user = User::find($request->user_id);
+            $user->notifyNow(new TicketNotification($ticket, $event));
 
             return response()->json([
-                'message' => 'Payment for event with id ' . $request->event_id . ' was successful',
+                'message' => 'Payment for event with id: ' . $event->id . ' was successful',
             ], 200);
         }
 
@@ -160,37 +148,58 @@ class EventController extends Controller
         ], 500);
     }
 
-    public function join(StoreUserEvent $request, $user)
+    public function join(StoreUserEvent $request, $id)
     {
 
         // Check if user already join event
-        $event = $request->event_id;
-        $ticket = Ticket::where('user_id', $user)->where('code', $request->code)->where('event_id', $event)->first();
+        $user = $request->user_id;
+        $ticket = Ticket::where('user_id', $user)->where('code', $request->code)->where('event_id', $id)->first();
 
         if (!$ticket) {
             // Throw Ticket not found exception
             return response()->json([
                 'message' => 'Ticket code not valid',
-            ], 404);
+            ], 422);
         }
 
-        if ($ticket->is_used && $ticket->date_used->isPast()) {
+        if ($ticket && $ticket->is_used && $ticket->date_used <= now()) {
             // throw Used_ticket_Error
             return response()->json([
                 'message' => 'Ticket already used',
-            ], 404);
+            ], 422);
         }
 
         $joinEvent = new UserEvent;
         $joinEvent->user_id = $user;
-        $joinEvent->event_id = $event;
+        $joinEvent->event_id = $id;
 
-        if ($joinEvent->save()) {
-            // Send Success Email
+        $ticket->is_used = true;
+        $ticket->used_date = now();
+
+        if ($joinEvent->save() && $ticket->save()) {
+            // Send Success Response
+            return response()->json([
+                'message' => 'You\'ve joined event with id: ' . $id . ' successfully',
+            ], 200);
         }
 
         return response()->json([
             'message' => 'Internal Server Error, Please try again',
         ], 500);
+    }
+
+    private function findEvent($id)
+    {
+        $cachedEvent = Cache::remember('event_id_' . $id, $this->duration, function () use ($id) {
+            return Event::find($id);
+        });
+
+        if ($cachedEvent) {
+            return $cachedEvent;
+        }
+
+        return response()->json([
+            'message' => 'Event not found',
+        ], 404);
     }
 }

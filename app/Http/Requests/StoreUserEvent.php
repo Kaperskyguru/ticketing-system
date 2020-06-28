@@ -24,7 +24,6 @@ class StoreUserEvent extends FormRequest
     public function rules()
     {
         return [
-            'event_id' => ['required', 'exists:App\Event,id'],
             'user_id' => ['required', 'exists:App\User,id'],
             'code' => ['required', 'string'],
         ];

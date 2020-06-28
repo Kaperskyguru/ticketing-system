@@ -6,8 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Ticket extends Model
 {
-    public function ticket()
-    {
-        return $this->belongsTo('App\Event');
-    }
+    public $fillable = [
+        'user_id', 'event_id', 'amount', 'code'
+    ];
+
+    protected $dates = ['date_used'];
 }

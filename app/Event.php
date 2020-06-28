@@ -10,7 +10,7 @@ class Event extends Model
         'title',
         'description',
         'ticket_price',
-        'event_date',
+        'date',
     ];
 
     public function events()
