@@ -12,6 +12,7 @@ use App\Notifications\TicketNotification;
 use App\Ticket;
 use App\User;
 use App\UserEvent;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Keygen\Keygen;
@@ -55,18 +56,21 @@ class EventController extends Controller
      */
     public function store(StoreEvent $request)
     {
-        $event = Event::create($request->validated());
+        if (request()->user()->tokenCan('can-add')) {
+            $event = Event::create($request->validated());
 
-        if ($event) {
-            Cache::put('event' . '_id_' . $event->id, $event, $this->duration);
-            Log::info('New Event with id: ' . $event->id . 'created and cached');
-            return new EventResource($event);
+            if ($event) {
+                Cache::put('event' . '_id_' . $event->id, $event, $this->duration);
+                Log::info('New Event with id: ' . $event->id . 'created and cached');
+                return new EventResource($event);
+            }
+
+            Log::debug('Event was not created, something wrong with server');
+            return response()->json([
+                'message' => 'Internal Server Error',
+            ], 500);
         }
-
-        Log::debug('Event was not created, something wrong with server');
-        return response()->json([
-            'message' => 'Internal Server Error',
-        ], 500);
+        throw new AuthenticationException();
     }
 
     /**
@@ -90,16 +94,19 @@ class EventController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $cachedEvent = $this->findEvent($id);
-
-        if ($cachedEvent->update($request->all())) {
-            if (Cache::has('event' . '_id_' . $id)) {
-                Cache::forget('event' . '_id_' . $id);
-            }
-
+        if (request()->user()->tokenCan('can-edit')) {
             $cachedEvent = $this->findEvent($id);
-            return new EventResource($cachedEvent);
+
+            if ($cachedEvent->update($request->all())) {
+                if (Cache::has('event' . '_id_' . $id)) {
+                    Cache::forget('event' . '_id_' . $id);
+                }
+
+                $cachedEvent = $this->findEvent($id);
+                return new EventResource($cachedEvent);
+            }
         }
+        throw new AuthenticationException();
     }
 
     /**
@@ -110,23 +117,26 @@ class EventController extends Controller
      */
     public function destroy($id)
     {
-        $cachedEvent = $this->findEvent($id);
+        if (request()->user()->tokenCan('can-delete')) {
+            $cachedEvent = $this->findEvent($id);
 
-        if (!$cachedEvent && $cachedEvent->delete()) {
-            Log::info('Deleted event with id: ' . $id);
+            if (!$cachedEvent && $cachedEvent->delete()) {
+                Log::info('Deleted event with id: ' . $id);
 
-            if (Cache::has('event' . '_id_' . $id)) {
-                Cache::forget('event' . '_id_' . $id);
+                if (Cache::has('event' . '_id_' . $id)) {
+                    Cache::forget('event' . '_id_' . $id);
+                }
+                return response()->json([
+                    'message' => 'Event deleted successfully',
+                ], 200);
             }
-            return response()->json([
-                'message' => 'Event deleted successfully',
-            ], 200);
-        }
 
-        Log::debug('Could not delete event with id: ' . $id . ', Something wrong with server');
-        return response()->json([
-            'message' => 'Event not found',
-        ], 404);
+            Log::debug('Could not delete event with id: ' . $id . ', Something wrong with server');
+            return response()->json([
+                'message' => 'Event not found',
+            ], 404);
+        }
+        throw new AuthenticationException();
     }
 
     public function buy(StoreTicket $request, $id)

@@ -14,17 +14,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
-
 Route::group(['prefix' => 'v1'], function () {
 
-    Route::resource('events', "EventController");
-    Route::post('events/{id}/ticket', "EventController@buy");
-    Route::post('events/{id}/join', "EventController@join");
+    Route::post('auth/login', "AuthController@login");
+    Route::post('auth/register', "AuthController@signup");
 
-    // Route::group(['prefix' => 'auth'], function () {
-    // });
+    Route::group(['middleware' => 'auth:api'], function () {
+        Route::resource('events', "EventController");
+        Route::post('events/{id}/ticket', "EventController@buy");
+        Route::post('events/{id}/join', "EventController@join");
+    });
 });
