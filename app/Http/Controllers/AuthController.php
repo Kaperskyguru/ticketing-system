@@ -6,9 +6,10 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
-use App\Http\Controllers\Auth\ForgotPasswordController;
-use App\Notifications\UserRegister;
+use App\Http\Requests\StoreUser;
+use App\Notifications\RegistrationNotification;
 use App\User;
+use Illuminate\Support\Facades\Log;
 
 class AuthController extends Controller
 {
@@ -21,29 +22,29 @@ class AuthController extends Controller
      * @param  [string] password_confirmation
      * @return [string] message
      */
-    public function signup(Request $request)
+    public function signup(StoreUser $request)
     {
-        // $token = $this->generateOTP(8);
-
-        $request->validate([
-            'name' => 'required|string',
-            'email' => 'required|string|email|unique:users',
-            'password' => 'required|string|confirmed',
-        ]);
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => bcrypt($request->password),
             'is_admin' => false
         ]);
+
         if ($user) {
             Cache::put('user_id_' . $user->id, $user, 60);
-            $user->notify(new UserRegister($user));
+            Log::info('New User with id: ' . $user->id . 'created and cached');
+            $user->notify(new RegistrationNotification($user));
             return response()->json([
                 'message' => 'Successfully created user!',
                 'user' => $user,
             ], 200);
         }
+
+        Log::debug('User was not created, something wrong with server');
+        return response()->json([
+            'message' => 'Internal Server Error',
+        ], 500);
     }
 
     /**
@@ -67,6 +68,7 @@ class AuthController extends Controller
 
         $credentials = request(['email', 'password']);
         if (!Auth::attempt($credentials)) {
+            Log::error('User with email' . $request->email . ' could not log in');
             return response()->json([
                 'message' => 'Unauthorized',
             ], 401);
@@ -87,6 +89,7 @@ class AuthController extends Controller
         }
 
         $token->save();
+        Log::info('User with id: ' . $user->id . ' logged in successfully');
         return response()->json([
             'user' => $user,
             'access_token' => $tokenResult->accessToken,
@@ -106,52 +109,9 @@ class AuthController extends Controller
     {
         $request->user()->token()->revoke();
         $request->user()->token()->delete();
+        Log::info('User with id: ' . $request->user()->id . ' logout in successfully');
         return response()->json([
             'message' => 'Successfully logged out',
-        ], 200);
-    }
-
-    /**
-     * Verify a user
-     *
-     * @return [string] message
-     */
-    public function verify(Request $request)
-    {
-        if ($user = User::where('token', $request->token)->first()) {
-            $user->token = null;
-            $user->status = 2;
-            if ($user->save() && $user->markEmailAsVerified()) {
-                return response()->json([
-                    'message' => 'Successfully verified',
-                ], 200);
-            }
-        } else {
-            return response()->json([
-                'message' => 'Invalid Verification Code',
-            ], 200);
-        }
-    }
-
-    private function generateOTP(int $n)
-    {
-        $generator = "1234567890";
-        $result = "";
-
-        for ($i = 1; $i <= $n; $i++) {
-            $result .= \substr($generator, (rand() % (strlen($generator))), 1);
-        }
-        return $result;
-    }
-
-    public function passwordReset(Request $request)
-    {
-        //Remove this from here
-
-        $f = new ForgotPasswordController;
-        $message = $f->sendResetLinkEmail($request);
-        return response()->json([
-            'message' => $message,
         ], 200);
     }
 }

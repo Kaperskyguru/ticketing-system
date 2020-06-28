@@ -29,6 +29,7 @@ class AuthServiceProvider extends ServiceProvider
         Passport::tokensCan([
             'can-edit' => 'Can edit event',
             'can-add' => 'Can add event',
+            'can-delete' => 'Can delete event',
             'can-view' => 'Can view event',
             'can-buy' => 'Can buy ticket',
             'can-join' => 'Can join event',
