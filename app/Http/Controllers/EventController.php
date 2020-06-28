@@ -13,8 +13,8 @@ use App\Ticket;
 use App\User;
 use App\UserEvent;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 use Keygen\Keygen;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class EventController extends Controller
 {
@@ -37,8 +37,11 @@ class EventController extends Controller
             return null;
         });
         if ($events) {
+            Log::info('All event retrieved and cached');
             return EventResource::collection($events);
         }
+
+        Log::error('Events not found');
         return response()->json([
             'message' => 'Events not found'
         ], 404);
@@ -56,8 +59,11 @@ class EventController extends Controller
 
         if ($event) {
             Cache::put('event' . '_id_' . $event->id, $event, $this->duration);
+            Log::info('New Event with id: ' . $event->id . 'created and cached');
             return new EventResource($event);
         }
+
+        Log::debug('Event was not created, something wrong with server');
         return response()->json([
             'message' => 'Internal Server Error',
         ], 500);
@@ -107,6 +113,8 @@ class EventController extends Controller
         $cachedEvent = $this->findEvent($id);
 
         if (!$cachedEvent && $cachedEvent->delete()) {
+            Log::info('Deleted event with id: ' . $id);
+
             if (Cache::has('event' . '_id_' . $id)) {
                 Cache::forget('event' . '_id_' . $id);
             }
@@ -115,6 +123,7 @@ class EventController extends Controller
             ], 200);
         }
 
+        Log::debug('Could not delete event with id: ' . $id . ', Something wrong with server');
         return response()->json([
             'message' => 'Event not found',
         ], 404);
@@ -134,15 +143,17 @@ class EventController extends Controller
         $ticket->code = Keygen::numeric(5)->prefix(mt_rand(1, 9))->generate(true);;
 
         if ($ticket->save()) {
+            Log::info('User with id: ' . $request->user_id . ' purchase ticket with id: ' . $ticket->id . ' for event with id: ' . $event->id);
+
             // Send User Email, Send Code
             $user = User::find($request->user_id);
             $user->notifyNow(new TicketNotification($ticket, $event));
-
             return response()->json([
                 'message' => 'Payment for event with id: ' . $event->id . ' was successful',
             ], 200);
         }
 
+        Log::debug('Could not pay for ticket, Something wrong with server');
         return response()->json([
             'message' => 'Internal Server Error, Please try again',
         ], 500);
@@ -157,6 +168,7 @@ class EventController extends Controller
 
         if (!$ticket) {
             // Throw Ticket not found exception
+            Log::error('User with id: ' . $user . 'tried to used invalid ticket code: ' . $request->code . ' for event with id: ' . $id);
             return response()->json([
                 'message' => 'Ticket code not valid',
             ], 422);
@@ -164,6 +176,7 @@ class EventController extends Controller
 
         if ($ticket && $ticket->is_used && $ticket->date_used <= now()) {
             // throw Used_ticket_Error
+            Log::error('User with id: ' . $user . 'tried to used already used ticket code: ' . $request->code . ' for event with id: ' . $id);
             return response()->json([
                 'message' => 'Ticket already used',
             ], 422);
@@ -178,11 +191,13 @@ class EventController extends Controller
 
         if ($joinEvent->save() && $ticket->save()) {
             // Send Success Response
+            Log::info('User with id: ' . $user . 'successfully Joined Event with id: ' . $id);
             return response()->json([
                 'message' => 'You\'ve joined event with id: ' . $id . ' successfully',
             ], 200);
         }
 
+        Log::debug('Could not Join Event, something wrong with server');
         return response()->json([
             'message' => 'Internal Server Error, Please try again',
         ], 500);
@@ -195,9 +210,11 @@ class EventController extends Controller
         });
 
         if ($cachedEvent) {
+            Log::info('Single event with id: ' . $cachedEvent->id . 'retrieved and cached');
             return $cachedEvent;
         }
 
+        Log::debug('Event was not created, something wrong with server');
         return response()->json([
             'message' => 'Event not found',
         ], 404);
