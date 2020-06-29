@@ -31,7 +31,6 @@ jobs:
         DB_DATABASE: database/database.sqlite
         DB_FOREIGN_KEYS: true 
         APP_ENV: local
-    - name: Run migration
-      run: php artisan migrate --seed
-    - name: Execute Test
-      run: vendor/bin/phpunit
+      run: |
+        php artisan migrate --seed
+        vendor/bin/phpunit
