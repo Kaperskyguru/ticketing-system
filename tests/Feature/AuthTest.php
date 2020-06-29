@@ -31,38 +31,38 @@ class AuthTest extends TestCase
             );
     }
 
-    public function testUserLoginsSuccessfully()
-    {
-        $user = factory(User::class)->create([
-            'name' => 'Test Test',
-            'email' => Str::random(5) . '-test@test.com',
-            'password' => bcrypt('password'),
-            'email_verified_at' => now(),
-            'remember_token' => Str::random(10),
-        ]);
+    // public function testUserLoginsSuccessfully()
+    // {
+    //     $user = factory(User::class)->create([
+    //         'name' => 'Test Test',
+    //         'email' => Str::random(5) . '-test@test.com',
+    //         'password' => bcrypt('password'),
+    //         'email_verified_at' => now(),
+    //         'remember_token' => Str::random(10),
+    //     ]);
 
-        $loginPayload = ['email' => $user->email, 'password' => 'password'];
+    //     $loginPayload = ['email' => $user->email, 'password' => 'password'];
 
-        $this->json('POST', 'api/v1/auth/login', $loginPayload)
-            ->assertStatus(200)
-            ->assertJsonStructure(
-                [
-                    "user" => [
-                        "id",
-                        "name",
-                        "email",
-                        "email_verified_at",
-                        "is_admin",
-                        "created_at",
-                        "updated_at",
-                    ],
-                    "access_token",
-                    "token_type",
-                    "expires_at"
+    //     $this->json('POST', 'api/v1/auth/login', $loginPayload)
+    //         ->assertStatus(200)
+    //         ->assertJsonStructure(
+    //             [
+    //                 "user" => [
+    //                     "id",
+    //                     "name",
+    //                     "email",
+    //                     "email_verified_at",
+    //                     "is_admin",
+    //                     "created_at",
+    //                     "updated_at",
+    //                 ],
+    //                 "access_token",
+    //                 "token_type",
+    //                 "expires_at"
 
-                ]
-            );
-    }
+    //             ]
+    //         );
+    // }
 
     public function testRegisterRequiresEmailPasswordAndName()
     {
@@ -152,36 +152,36 @@ class AuthTest extends TestCase
         User::where('email', $payload['email'])->delete();
     }
 
-    public function testUserIsLoggedOutProperly()
-    {
-        $payload = [
-            'name' => 'Solomon Eseme',
-            'email' => 'solomon@test.com',
-            'password' => bcrypt('password'),
-            'email_verified_at' => now(),
-            'remember_token' => Str::random(10),
-        ];
-        $user = factory(User::class)->create($payload);
+    // public function testUserIsLoggedOutProperly()
+    // {
+    //     $payload = [
+    //         'name' => 'Solomon Eseme',
+    //         'email' => 'solomon@test.com',
+    //         'password' => bcrypt('password'),
+    //         'email_verified_at' => now(),
+    //         'remember_token' => Str::random(10),
+    //     ];
+    //     $user = factory(User::class)->create($payload);
 
-        // Log user in
-        $loginPayload = ['email' => $user->email, 'password' => 'password'];
-        $res = $this->json('POST', 'api/v1/auth/login', $loginPayload)->assertStatus(200);
-        User::where('email', $payload['email'])->delete();
-        $this->assertAuthenticated();
+    //     // Log user in
+    //     $loginPayload = ['email' => $user->email, 'password' => 'password'];
+    //     $res = $this->json('POST', 'api/v1/auth/login', $loginPayload)->assertStatus(200);
+    //     User::where('email', $payload['email'])->delete();
+    //     $this->assertAuthenticated();
 
-        $token = $res->decodeResponseJson()['access_token'];
+    //     $token = $res->decodeResponseJson()['access_token'];
 
-        $headers = ['Authorization' => "Bearer $token"];
+    //     $headers = ['Authorization' => "Bearer $token"];
 
-        $this->refreshApplication();
-        $this->get('api/v1/events', $headers)->assertStatus(200);
-        $this->post('api/v1/auth/logout', [], $headers)->assertStatus(200);
-        $this->assertGuest();
-    }
+    //     $this->refreshApplication();
+    //     $this->get('api/v1/events', $headers)->assertStatus(200);
+    //     $this->post('api/v1/auth/logout', [], $headers)->assertStatus(200);
+    //     $this->assertGuest();
+    // }
 
-    public function testUserWithNullToken()
-    {
-        $headers = ['Authorization' => "Bearer wrong_token"];
-        $this->json('get', 'api/v1/events', [], $headers)->assertStatus(401);
-    }
+    // public function testUserWithNullToken()
+    // {
+    //     $headers = ['Authorization' => "Bearer wrong_token"];
+    //     $this->json('get', 'api/v1/events', [], $headers)->assertStatus(401);
+    // }
 }
