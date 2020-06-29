@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Event;
+use App\Exceptions\UnauthorizedException;
 use App\Http\Requests\StoreEvent;
 use App\Http\Requests\StoreTicket;
 use App\Http\Requests\StoreUserEvent;
@@ -70,7 +71,7 @@ class EventController extends Controller
                 'message' => 'Internal Server Error',
             ], 500);
         }
-        throw new AuthenticationException();
+        throw new UnauthorizedException();
     }
 
     /**
@@ -106,7 +107,7 @@ class EventController extends Controller
                 return new EventResource($cachedEvent);
             }
         }
-        throw new AuthenticationException();
+        throw new UnauthorizedException();
     }
 
     /**
@@ -128,7 +129,7 @@ class EventController extends Controller
                 }
                 return response()->json([
                     'message' => 'Event deleted successfully',
-                ], 200);
+                ], 204);
             }
 
             Log::debug('Could not delete event with id: ' . $id . ', Something wrong with server');
@@ -136,7 +137,7 @@ class EventController extends Controller
                 'message' => 'Event not found',
             ], 404);
         }
-        throw new AuthenticationException();
+        throw new UnauthorizedException();
     }
 
     public function buy(StoreTicket $request, $id)

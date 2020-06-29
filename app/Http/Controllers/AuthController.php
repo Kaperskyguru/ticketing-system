@@ -9,10 +9,17 @@ use Illuminate\Support\Facades\Cache;
 use App\Http\Requests\StoreUser;
 use App\Notifications\RegistrationNotification;
 use App\User;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Log;
 
 class AuthController extends Controller
 {
+    function __construct()
+    {
+        // if ((App::environment() == 'testing') && array_key_exists("HTTP_Authorization",  Request::server())) {
+        //     $headers['Authorization'] = Request::server()["HTTP_Authorization"];
+        // }
+    }
     /**
      * Create user
      *
@@ -33,12 +40,12 @@ class AuthController extends Controller
 
         if ($user) {
             Cache::put('user_id_' . $user->id, $user, 60);
-            Log::info('New User with id: ' . $user->id . 'created and cached');
+            Log::info('New User with id: ' . $user->id . ' created and cached');
             $user->notify(new RegistrationNotification($user));
             return response()->json([
                 'message' => 'Successfully created user!',
                 'user' => $user,
-            ], 200);
+            ], 201);
         }
 
         Log::debug('User was not created, something wrong with server');
@@ -59,6 +66,7 @@ class AuthController extends Controller
      */
     public function login(Request $request)
     {
+
 
         $request->validate([
             'email' => 'required|string|email',
@@ -107,11 +115,16 @@ class AuthController extends Controller
      */
     public function logout(Request $request)
     {
-        $request->user()->token()->revoke();
-        $request->user()->token()->delete();
-        Log::info('User with id: ' . $request->user()->id . ' logout in successfully');
+        dd($request);
+
+        if (auth()->user()->token()->revoke() && auth()->user()->token()->delete()) {
+            Log::info('User with id: ' . $request->user()->id . ' logout in successfully');
+            return response()->json([
+                'message' => 'Successfully logged out',
+            ], 200);
+        }
         return response()->json([
-            'message' => 'Successfully logged out',
-        ], 200);
+            'message' => 'Internal Server Error, User not logged out',
+        ], 500);
     }
 }

@@ -50,6 +50,13 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $exception)
     {
-        return parent::render($request, $exception);
+        if ($request->expectsJson()) {
+            if ($exception instanceof UnauthorizedException) {
+                return response()->json([
+                    'message' => $exception->getMessage(),
+                ], 403);
+            }
+            return parent::render($request, $exception);
+        }
     }
 }
