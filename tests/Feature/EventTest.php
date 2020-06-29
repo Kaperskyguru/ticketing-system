@@ -53,6 +53,7 @@ class EventTest extends TestCase
         $user = factory(User::class)->create($payload);
 
         // Log user in
+
         $loginPayload = ['email' => $user->email, 'password' => 'password'];
         $res = $this->json('POST', 'api/v1/auth/login', $loginPayload)->assertStatus(200);
         User::where('email', $payload['email'])->delete();
