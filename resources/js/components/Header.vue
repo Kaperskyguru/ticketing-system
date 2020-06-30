@@ -2,13 +2,13 @@
     <nav class="navbar navbar-light bg-light">
       <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
       <li class="nav-item">
-          <a class="nav-link authBtn" id="pills-home-tab" data-toggle="pill" href="/index.html" role="tab" aria-controls="pills-home" aria-selected="true">Home</a>
+          <router-link class="nav-link authBtn" id="pills-home-tab" data-toggle="pill" to="/" role="tab" aria-controls="pills-home" aria-selected="false">Home</router-link>
       </li>
       <li class="nav-item">
-          <a class="nav-link authBtn" id="pills-profile-tab" data-toggle="pill" href="/pages/login.html" role="tab" aria-controls="pills-profile" aria-selected="false">Login</a>
+          <router-link class="nav-link authBtn" id="pills-profile-tab" data-toggle="pill" to="/login" role="tab" aria-controls="pills-profile" aria-selected="false">Login</router-link>
       </li>
       <li class="nav-item">
-          <a class="nav-link authBtn" id="pills-contact-tab" data-toggle="pill" href="/pages/register.html" role="tab" aria-controls="pills-contact" aria-selected="false">Register</a>
+          <router-link class="nav-link authBtn" id="pills-contact-tab" data-toggle="pill" to="/register" role="tab" aria-controls="pills-contact" aria-selected="false">Register</router-link>
       </li>
       </ul>
       <form class="form-inline">
@@ -26,8 +26,5 @@
 </template>
 <script>
     export default {
-        mounted() {
-            console.log('Component mounted.')
-        }
-    }
+    };
 </script>
