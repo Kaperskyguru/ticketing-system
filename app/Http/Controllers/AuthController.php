@@ -65,7 +65,7 @@ class AuthController extends Controller
         $credentials = request(['email', 'password']);
         if (!Auth::attempt($credentials)) {
             Log::error('User with email' . $request->email . ' could not log in');
-            throw new AuthenticationException('Login details not valid') 
+            throw new AuthenticationException('Login details not valid');
         }
 
         $user = $request->user();
@@ -83,7 +83,7 @@ class AuthController extends Controller
         }
 
         $token->save();
-        
+
         Log::info('User with id: ' . $user->id . ' logged in successfully');
 
         return response()->json([
