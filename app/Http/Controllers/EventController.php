@@ -142,7 +142,7 @@ class EventController extends Controller
 
         // Check if price matches
         if($event->ticket_price != $request->amount){
-            $message = 'Ticket with id: '.$event->id.' amount: '.$event->ticket_price.' does not equal to User amount: '.$request->amount
+            $message = 'Ticket with id: '.$event->id.' amount: '.$event->ticket_price.' does not equal to User amount: '.$request->amount;
             Log::debug($message);
             return $this->response($message, 422);
         }

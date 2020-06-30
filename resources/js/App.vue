@@ -13,7 +13,7 @@ export default {
 
   created() {
     // this.$store.dispatch("getCategories", { self: this });
-    // this.$store.dispatch("getProducts", { self: this });
+    this.$store.dispatch("getEvents", { self: this });
     // this.$store.dispatch("getProductCategories", { self: this });
   }
 };
