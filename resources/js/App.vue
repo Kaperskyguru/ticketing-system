@@ -20,4 +20,27 @@ export default {
 </script>
 
 <style>
+.banner {
+  color: white;
+  background-color: black;
+}
+
+.card-custom {
+  color: blue;
+}
+
+.customBtn {
+  border-radius: 55px;
+}
+
+.authBtn {
+  color: #727273;
+}
+.authBtnInner {
+  color: #caa720;
+}
+
+p{
+  color: red
+}
 </style>
