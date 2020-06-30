@@ -13,7 +13,7 @@
                 </div>
                 
                 <div class="col-md-6">
-                	<counter title="Total Amount Spent" :value="$243"></counter>
+                	<counter title="Total Amount Spent" :value="243" symbol="$"></counter>
                 </div>
                 <br />
             </div>

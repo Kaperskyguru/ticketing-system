@@ -1,26 +1,4 @@
-@import url(https://fonts.googleapis.com/css?family=Nunito);.banner {
-  color: white;
-  background-color: black;
-}
-
-.card-custom {
-  color: blue;
-}
-
-.customBtn {
-  border-radius: 55px;
-}
-
-.authBtn {
-  color: #727273;
-}
-.authBtnInner {
-  color: #caa720;
-}
-
-p{
-	color: red
-}@charset "UTF-8";
+@import url(https://fonts.googleapis.com/css?family=Nunito);@charset "UTF-8";
 
 /*!
  * Bootstrap v4.5.0 (https://getbootstrap.com/)
