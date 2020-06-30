@@ -7,19 +7,15 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use App\Http\Requests\StoreUser;
+use App\Http\Requests\ValidateLogin;
 use App\Notifications\RegistrationNotification;
 use App\User;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Auth\AuthenticationException;
 
 class AuthController extends Controller
 {
-    function __construct()
-    {
-        // if ((App::environment() == 'testing') && array_key_exists("HTTP_Authorization",  Request::server())) {
-        //     $headers['Authorization'] = Request::server()["HTTP_Authorization"];
-        // }
-    }
     /**
      * Create user
      *
@@ -40,18 +36,16 @@ class AuthController extends Controller
 
         if ($user) {
             Cache::put('user_id_' . $user->id, $user, 60);
+
             Log::info('New User with id: ' . $user->id . ' created and cached');
+
             $user->notify(new RegistrationNotification($user));
-            return response()->json([
-                'message' => 'Successfully created user!',
-                'user' => $user,
-            ], 201);
+
+            return $this->response('Successfully created user!', 201, $user, 'user');
         }
 
         Log::debug('User was not created, something wrong with server');
-        return response()->json([
-            'message' => 'Internal Server Error',
-        ], 500);
+        return $this->response('Internal Server Error', 500);
     }
 
     /**
@@ -63,23 +57,15 @@ class AuthController extends Controller
      * @return [string] access_token
      * @return [string] token_type
      * @return [string] expires_at
+     * @return [object] user
      */
-    public function login(Request $request)
+    public function login(ValidateLogin $request)
     {
-
-
-        $request->validate([
-            'email' => 'required|string|email',
-            'password' => 'required|string',
-            'remember_me' => 'boolean',
-        ]);
 
         $credentials = request(['email', 'password']);
         if (!Auth::attempt($credentials)) {
             Log::error('User with email' . $request->email . ' could not log in');
-            return response()->json([
-                'message' => 'Unauthorized',
-            ], 401);
+            throw new AuthenticationException('Login details not valid') 
         }
 
         $user = $request->user();
@@ -97,7 +83,9 @@ class AuthController extends Controller
         }
 
         $token->save();
+        
         Log::info('User with id: ' . $user->id . ' logged in successfully');
+
         return response()->json([
             'user' => $user,
             'access_token' => $tokenResult->accessToken,
@@ -118,12 +106,9 @@ class AuthController extends Controller
 
         if (auth()->user()->token()->revoke() && auth()->user()->token()->delete()) {
             Log::info('User with id: ' . $request->user()->id . ' logout in successfully');
-            return response()->json([
-                'message' => 'Successfully logged out',
-            ], 200);
+            return $this->response('Successfully logged out', 200);
         }
-        return response()->json([
-            'message' => 'Internal Server Error, User not logged out',
-        ], 500);
+        Log::debug('User with id: ' . $request->user()->id . ' could not logout, Internal Server Error');
+        return $this->response('Internal Server Error, User not logged out', 500);
     }
 }
