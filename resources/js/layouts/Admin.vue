@@ -1,16 +1,10 @@
 <template>
-    <div>
-      <headers></headers>
-      <router-view></router-view>
-    </div>
+    <router-view></router-view>
 </template>
 
 <script>
-import Headers from "./components/Header.vue";
 export default {
   name: "App",
-  components: { Headers },
-
   created() {
     // this.$store.dispatch("getCategories", { self: this });
     // this.$store.dispatch("getProducts", { self: this });
