@@ -1,0 +1,33 @@
+<template>
+    <nav class="navbar navbar-light bg-light">
+      <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+      <li class="nav-item">
+          <a class="nav-link authBtn" id="pills-home-tab" data-toggle="pill" href="/index.html" role="tab" aria-controls="pills-home" aria-selected="true">Home</a>
+      </li>
+      <li class="nav-item">
+          <a class="nav-link authBtn" id="pills-profile-tab" data-toggle="pill" href="/pages/login.html" role="tab" aria-controls="pills-profile" aria-selected="false">Login</a>
+      </li>
+      <li class="nav-item">
+          <a class="nav-link authBtn" id="pills-contact-tab" data-toggle="pill" href="/pages/register.html" role="tab" aria-controls="pills-contact" aria-selected="false">Register</a>
+      </li>
+      </ul>
+      <form class="form-inline">
+        <input
+          class="form-control mr-sm-2"
+          type="search"
+          placeholder="Search"
+          aria-label="Search"
+        />
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
+          Search
+        </button>
+      </form>
+    </nav>
+</template>
+<script>
+    export default {
+        mounted() {
+            console.log('Component mounted.')
+        }
+    }
+</script>

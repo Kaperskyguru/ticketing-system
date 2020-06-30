@@ -115,7 +115,6 @@ class AuthController extends Controller
      */
     public function logout(Request $request)
     {
-        dd($request);
 
         if (auth()->user()->token()->revoke() && auth()->user()->token()->delete()) {
             Log::info('User with id: ' . $request->user()->id . ' logout in successfully');
