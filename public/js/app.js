@@ -61311,7 +61311,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 
-var baseDomain = "http://127.0.0.1:8000";
+var baseDomain = window.location.origin || "http://127.0.0.1:8000";
 var baseURL = "".concat(baseDomain, "/api/v1");
 var httpsClient = axios__WEBPACK_IMPORTED_MODULE_0___default.a.create({
   baseURL: baseURL
