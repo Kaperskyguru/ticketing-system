@@ -1,115 +1,100 @@
-import Vue from 'vue';
-import VueRouter from 'vue-router';
-import store from './store'
+import Vue from "vue";
+import VueRouter from "vue-router";
+import store from "./store";
 Vue.use(VueRouter);
 
-import Home from './views/Home'
-import Login from './views/Login'
-import Register from './views/Register'
-import Ticket from './views/Ticket'
-import User from './views/dashboard/User'
-import Admin from './layouts/Admin'
-import Add from './views/dashboard/Add'
-import AdminHome from './views/dashboard/Admin'
+import Home from "./views/Home";
+import Login from "./views/Login";
+import Register from "./views/Register";
+import Ticket from "./views/Ticket";
+import User from "./views/dashboard/User";
+import Admin from "./layouts/Admin";
+import Add from "./views/dashboard/Add";
+import AdminHome from "./views/dashboard/Admin";
 
 const router = new VueRouter({
     // mode: 'history',
     // linkActiveClass: 'active',
     routes: [
         {
-            path: '/',
-            name: 'home',
+            path: "/",
+            name: "home",
             component: Home
         },
         {
-            path: '/login',
-            name: 'login',
+            path: "/login",
+            name: "login",
             component: Login
         },
         {
-            path: '/register',
-            name: 'register',
+            path: "/register",
+            name: "register",
             component: Register
         },
         {
-            path: '/ticket/:id',
-            name: 'ticket',
+            path: "/ticket/:id",
+            name: "ticket",
             component: Ticket
         },
         {
-            path: '/user/:id',
-            name: 'user',
+            path: "/user/:id",
+            name: "user",
             component: User,
             meta: { requiresAuth: true },
-            beforeEnter(to, from, next){
+            beforeEnter(to, from, next) {
                 if (store.getters["isUser"]) {
                     next({
-                        name: 'user',
-                        params:{ id: store.state.user.id }
-                    })
+                        name: "user",
+                        params: { id: store.state.user.id }
+                    });
                 } else {
                     next({
-                        name:'login'
+                        name: "login"
                     });
                 }
-            },
+            }
         },
         {
-            path: '/admin',
-            name: 'admin',
+            path: "/admin",
+            name: "admin",
             component: Admin,
             meta: { requiresAuth: true },
-            children:[
-            	{
-		            path: 'add',
-		            component: Add
-        		},
-        		{
-		            path: '/',
-		            component: AdminHome
-        		},
-            ],
-            beforeEnter(to, from, next){
-                if (store.getters["isAdmin"]) {
-                    next()
-                } else {
-                   next({
-                        name: 'login',
-                    }) 
+            children: [
+                {
+                    path: "add",
+                    component: Add
+                },
+                {
+                    path: "/",
+                    component: AdminHome
                 }
-            },
-        },
-    ],
+            ],
+            beforeEnter(to, from, next) {
+                if (store.getters["isAdmin"]) {
+                    next();
+                } else {
+                    next({
+                        name: "login"
+                    });
+                }
+            }
+        }
+    ]
 });
 
 router.beforeEach((to, from, next) => {
-  if (to.matched.some(record => record.meta.requiresAuth)) {
-    if (!store.state.loggedIn) {
-      next({
-        path: '/login',
-        query: { redirect: to.fullPath }
-      })
+    if (to.matched.some(record => record.meta.requiresAuth)) {
+        if (!store.state.loggedIn) {
+            next({
+                path: "/login",
+                query: { redirect: to.fullPath }
+            });
+        } else {
+            next();
+        }
     } else {
-      next()
+        next();
     }
-  } else {
-    next()
-  }
-})
+});
 
-function redirect(next) {
-    console.log('ws')
-    if (store.getters["isAdmin"]) {
-        next()
-    } else if(store.getters["isUser"]) {
-        next({
-          name: 'user',
-          params:{ id: store.state.user.id }
-        });
-    } else {
-        next({
-          name: "login"
-        });
-    }
-}
 export default router;

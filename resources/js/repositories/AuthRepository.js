@@ -1,13 +1,12 @@
-import Http from './clients/AxiosClient';
-const resource = '/auth';
+import Http from "./clients/AxiosClient";
+const resource = "/auth";
 
 export default {
-
-    async login(payload){
+    async login(payload) {
         return await Http.post(`${resource}/login`, payload);
     },
 
-    async register(payload){
+    async register(payload) {
         return await Http.post(`${resource}/register`, payload);
     }
 };

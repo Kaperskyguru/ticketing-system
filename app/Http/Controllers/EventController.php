@@ -35,8 +35,9 @@ class EventController extends Controller
 
         $events = Cache::remember('events_page_' . $page.'_size_'.$size, $this->duration, function () use ($size) {
             $data = Event::latest()->paginate($size);
-            if ($data->items())
+            if ($data->items()) {
                 return $data;
+            }
             return null;
         });
         if ($events) {
@@ -141,7 +142,7 @@ class EventController extends Controller
         $event = $this->findEvent($id);
 
         // Check if price matches
-        if($event->ticket_price != $request->amount){
+        if ($event->ticket_price != $request->amount) {
             $message = 'Ticket with id: '.$event->id.' amount: '.$event->ticket_price.' does not equal to User amount: '.$request->amount;
             Log::debug($message);
             return $this->response($message, 422);
@@ -151,7 +152,7 @@ class EventController extends Controller
         $ticket->user_id = $request->user_id;
         $ticket->event_id = $event->id;
         $ticket->amount = $request->amount;
-        $ticket->code = Keygen::numeric(5)->prefix(mt_rand(1, 9))->generate(true);;
+        $ticket->code = Keygen::numeric(5)->prefix(mt_rand(1, 9))->generate(true);
 
         if ($ticket->save()) {
             Log::info('User with id: ' . $request->user_id . ' purchase ticket with id: ' . $ticket->id . ' for event with id: ' . $event->id);
@@ -204,9 +205,13 @@ class EventController extends Controller
 
     private function findEvent($id)
     {
-        $cachedEvent = Cache::remember('event_id_' . $id, $this->duration, function () use ($id) {
-            return Event::find($id);
-        });
+        $cachedEvent = Cache::remember(
+            'event_id_' . $id,
+            $this->duration,
+            function () use ($id) {
+                return Event::find($id);
+            }
+        );
 
         if ($cachedEvent) {
             Log::info('Single event with id: ' . $cachedEvent->id . 'retrieved and cached');

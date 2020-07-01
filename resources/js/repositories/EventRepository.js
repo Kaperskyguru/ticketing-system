@@ -1,5 +1,5 @@
-import Http from './clients/AxiosClient';
-const resource = '/events';
+import Http from "./clients/AxiosClient";
+const resource = "/events";
 
 export default {
     get() {
@@ -15,6 +15,6 @@ export default {
         return Http.put(`${resource}/${id}`, payload);
     },
     delete(id) {
-        return Http.delete(`${resource}/${id}`)
-    },
+        return Http.delete(`${resource}/${id}`);
+    }
 };
