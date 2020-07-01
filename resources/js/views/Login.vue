@@ -88,7 +88,17 @@ export default {
         async login() {
             try {
                 await this.$store.dispatch("login", this.user);
-                this.$router.push("/admin/");
+                if (
+                    this.$store.state.loggedIn &&
+                    this.$store.getters["isAdmin"]
+                )
+                    return this.$router.push("/admin/");
+                else {
+                    return this.$router.push({
+                        name: "user",
+                        params: { id: this.$store.state.user.id }
+                    });
+                }
             } catch (err) {
                 console.log(err);
             }

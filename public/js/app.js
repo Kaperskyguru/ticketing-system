@@ -1962,8 +1962,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: 'Counter',
-  props: ['value', 'title', 'symbol']
+  name: "Counter",
+  props: ["value", "title", "symbol"]
 });
 
 /***/ }),
@@ -1991,9 +1991,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: 'Event',
-  props: ['event'],
+  name: "Event",
+  props: ["event"],
   data: function data() {
     return {};
   },
@@ -2040,9 +2042,32 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: 'EventTable',
-  props: ['events'],
+  name: "EventTable",
+  props: ["events", "isAdmin"],
   data: function data() {
     return {};
   },
@@ -2055,6 +2080,16 @@ __webpack_require__.r(__webpack_exports__);
       } else {
         return text;
       }
+    },
+    viewEvent: function viewEvent(id) {
+      return this.$router.push({
+        name: "ticket",
+        params: {
+          id: id
+        }
+      });
+    },
+    deleteEvent: function deleteEvent(id) {// Dispatch
     }
   }
 });
@@ -2087,14 +2122,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: 'Events',
+  name: "Events",
   components: {
     Event: _Event_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
   data: function data() {
     return {};
   },
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapState"])(['events']))
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapState"])(["events"]))
 });
 
 /***/ }),
@@ -2108,6 +2143,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 //
 //
 //
@@ -2134,7 +2177,110 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-/* harmony default export */ __webpack_exports__["default"] = ({});
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  computed: {
+    loggedIn: function loggedIn() {
+      console.log(this.$store.state.loggedIn);
+      return this.$store.state.loggedIn;
+    },
+    isAdmin: function isAdmin() {
+      return this.loggedIn && this.$store.getters["isAdmin"];
+    }
+  },
+  methods: {
+    logout: function logout() {
+      var _this = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
+        var result;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _context.prev = 0;
+                _context.next = 3;
+                return _this.$store.dispatch("logout");
+
+              case 3:
+                result = _context.sent;
+
+                if (!result) {
+                  _context.next = 6;
+                  break;
+                }
+
+                return _context.abrupt("return", _this.$router.push("/"));
+
+              case 6:
+                return _context.abrupt("return", _this.$router.push("login"));
+
+              case 9:
+                _context.prev = 9;
+                _context.t0 = _context["catch"](0);
+                console.log(_context.t0);
+
+              case 12:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, null, [[0, 9]]);
+      }))();
+    }
+  }
+});
 
 /***/ }),
 
@@ -2191,9 +2337,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: 'Home',
+  name: "Home",
   components: {
     Events: _components_Events_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
@@ -2263,9 +2411,42 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: 'Login',
+  name: "Login",
   components: {
     ValidationProvider: vee_validate__WEBPACK_IMPORTED_MODULE_1__["ValidationProvider"],
     ValidationObserver: vee_validate__WEBPACK_IMPORTED_MODULE_1__["ValidationObserver"]
@@ -2286,25 +2467,39 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               case 0:
                 _context.prev = 0;
                 _context.next = 3;
-                return _this.$store.dispatch('login', _this.user);
+                return _this.$store.dispatch("login", _this.user);
 
               case 3:
-                _this.$router.push('/admin/');
+                if (!(_this.$store.state.loggedIn && _this.$store.getters["isAdmin"])) {
+                  _context.next = 7;
+                  break;
+                }
 
-                _context.next = 9;
+                return _context.abrupt("return", _this.$router.push("/admin/"));
+
+              case 7:
+                return _context.abrupt("return", _this.$router.push({
+                  name: "user",
+                  params: {
+                    id: _this.$store.state.user.id
+                  }
+                }));
+
+              case 8:
+                _context.next = 13;
                 break;
 
-              case 6:
-                _context.prev = 6;
+              case 10:
+                _context.prev = 10;
                 _context.t0 = _context["catch"](0);
                 console.log(_context.t0);
 
-              case 9:
+              case 13:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, null, [[0, 6]]);
+        }, _callee, null, [[0, 10]]);
       }))();
     }
   }
@@ -2383,9 +2578,65 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: 'Register',
+  name: "Register",
   components: {
     ValidationProvider: vee_validate__WEBPACK_IMPORTED_MODULE_1__["ValidationProvider"],
     ValidationObserver: vee_validate__WEBPACK_IMPORTED_MODULE_1__["ValidationObserver"]
@@ -2406,10 +2657,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               case 0:
                 _context.prev = 0;
                 _context.next = 3;
-                return _this.$store.dispatch('register', _this.user);
+                return _this.$store.dispatch("register", _this.user);
 
               case 3:
-                _this.$router.push('login');
+                _this.$router.push("login");
 
                 _context.next = 9;
                 break;
@@ -2482,11 +2733,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: 'Ticket',
+  name: "Ticket",
   data: function data() {
     return {};
   },
@@ -2541,8 +2790,26 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: 'Add',
+  name: "Add",
   data: function data() {
     return {};
   }
@@ -2608,11 +2875,18 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: 'Admin',
+  name: "Admin",
   components: {
     EventTable: _components_EventTable__WEBPACK_IMPORTED_MODULE_1__["default"],
     Counter: _components_Counter__WEBPACK_IMPORTED_MODULE_0__["default"]
@@ -2620,7 +2894,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   data: function data() {
     return {};
   },
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_2__["mapState"])(['insights', 'events']))
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_2__["mapState"])(["insights", "events"]))
 });
 
 /***/ }),
@@ -2680,11 +2954,19 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: 'User',
+  name: "User",
   components: {
     Counter: _components_Counter__WEBPACK_IMPORTED_MODULE_0__["default"],
     EventTable: _components_EventTable__WEBPACK_IMPORTED_MODULE_1__["default"]
@@ -2692,7 +2974,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   data: function data() {
     return {};
   },
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_2__["mapState"])(['insights']))
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_2__["mapState"])(["insights", "userevents"])),
+  beforeCreate: function beforeCreate() {
+    this.$store.dispatch("getUserEvents", this.$store.state.user.id);
+  }
 });
 
 /***/ }),
@@ -7139,7 +7424,7 @@ exports = module.exports = __webpack_require__(/*! ../../node_modules/css-loader
 
 
 // module
-exports.push([module.i, "\n.banner {\n  color: white;\n  background-color: black;\n}\n.card-custom {\n  color: blue;\n}\n.customBtn {\n  border-radius: 55px;\n}\n.authBtn {\n  color: #727273;\n}\n.authBtnInner {\n  color: #caa720;\n}\np{\n  color: red\n}\n", ""]);
+exports.push([module.i, "\n.banner {\n    color: white;\n    background-color: black;\n}\n.card-custom {\n    color: blue;\n}\n.customBtn {\n    border-radius: 55px;\n}\n.authBtn {\n    color: #727273;\n}\n.authBtnInner {\n    color: #caa720;\n}\np {\n    color: red;\n}\n", ""]);
 
 // exports
 
@@ -42403,7 +42688,7 @@ var render = function() {
         _c("hr"),
         _vm._v(" "),
         _c("small", { staticClass: "authBtnInner pb-3" }, [
-          _vm._v("\n\t    \t" + _vm._s(_vm.event.description) + "\n\t    ")
+          _vm._v(_vm._s(_vm.event.description))
         ]),
         _vm._v(" "),
         _c(
@@ -42455,7 +42740,7 @@ var render = function() {
       _c(
         "tbody",
         _vm._l(_vm.events, function(event, i) {
-          return _c("tr", [
+          return _c("tr", { key: i }, [
             _c("th", { attrs: { scope: "row" } }, [_vm._v(_vm._s(i + 1))]),
             _vm._v(" "),
             _c("td", [_vm._v(_vm._s(_vm.textPrefix(event.title, 40, "...")))]),
@@ -42468,7 +42753,53 @@ var render = function() {
             _vm._v(" "),
             _c("td", [_vm._v(_vm._s(event.event_date))]),
             _vm._v(" "),
-            _vm._m(1, true)
+            _c("td", [
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-primary",
+                  attrs: { type: "button" },
+                  on: {
+                    click: function($event) {
+                      return _vm.viewEvent(event.id)
+                    }
+                  }
+                },
+                [_vm._v("\n                    View\n                ")]
+              ),
+              _vm._v(" "),
+              _vm.isAdmin
+                ? _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-info",
+                      attrs: { type: "button" },
+                      on: {
+                        click: function($event) {
+                          return _vm.UpdateEvent(event.id)
+                        }
+                      }
+                    },
+                    [_vm._v("\n                    Update\n                ")]
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.isAdmin
+                ? _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-danger",
+                      attrs: { type: "button" },
+                      on: {
+                        click: function($event) {
+                          return _vm.deleteEvent(event.id)
+                        }
+                      }
+                    },
+                    [_vm._v("\n                    Delete\n                ")]
+                  )
+                : _vm._e()
+            ])
           ])
         }),
         0
@@ -42495,24 +42826,6 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", { attrs: { scope: "col" } }, [_vm._v("Actions")])
       ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("td", [
-      _c(
-        "button",
-        { staticClass: "btn btn-primary", attrs: { type: "button" } },
-        [_vm._v("View")]
-      ),
-      _vm._v(" "),
-      _c(
-        "button",
-        { staticClass: "btn btn-danger", attrs: { type: "button" } },
-        [_vm._v("Delete")]
-      )
     ])
   }
 ]
@@ -42599,51 +42912,110 @@ var render = function() {
           1
         ),
         _vm._v(" "),
-        _c(
-          "li",
-          { staticClass: "nav-item" },
-          [
-            _c(
-              "router-link",
-              {
-                staticClass: "nav-link authBtn",
-                attrs: {
-                  id: "pills-profile-tab",
-                  "data-toggle": "pill",
-                  to: "/login",
-                  role: "tab",
-                  "aria-controls": "pills-profile",
-                  "aria-selected": "false"
-                }
-              },
-              [_vm._v("Login")]
+        !_vm.loggedIn
+          ? _c(
+              "li",
+              { staticClass: "nav-item" },
+              [
+                _c(
+                  "router-link",
+                  {
+                    staticClass: "nav-link authBtn",
+                    attrs: {
+                      id: "pills-profile-tab",
+                      "data-toggle": "pill",
+                      to: "/login",
+                      role: "tab",
+                      "aria-controls": "pills-profile",
+                      "aria-selected": "false"
+                    }
+                  },
+                  [_vm._v("Login")]
+                )
+              ],
+              1
             )
-          ],
-          1
-        ),
+          : _vm._e(),
         _vm._v(" "),
-        _c(
-          "li",
-          { staticClass: "nav-item" },
-          [
-            _c(
-              "router-link",
-              {
-                staticClass: "nav-link authBtn",
-                attrs: {
-                  id: "pills-contact-tab",
-                  "data-toggle": "pill",
-                  to: "/register",
-                  role: "tab",
-                  "aria-controls": "pills-contact",
-                  "aria-selected": "false"
-                }
-              },
-              [_vm._v("Register")]
+        !_vm.loggedIn
+          ? _c(
+              "li",
+              { staticClass: "nav-item" },
+              [
+                _c(
+                  "router-link",
+                  {
+                    staticClass: "nav-link authBtn",
+                    attrs: {
+                      id: "pills-contact-tab",
+                      "data-toggle": "pill",
+                      to: "/register",
+                      role: "tab",
+                      "aria-controls": "pills-contact",
+                      "aria-selected": "false"
+                    }
+                  },
+                  [_vm._v("Register")]
+                )
+              ],
+              1
             )
-          ],
-          1
-        )
+          : _vm._e(),
+        _vm._v(" "),
+        _vm.isAdmin
+          ? _c(
+              "li",
+              { staticClass: "nav-item" },
+              [
+                _c(
+                  "router-link",
+                  {
+                    staticClass: "nav-link authBtn",
+                    attrs: {
+                      id: "pills-contact-tab",
+                      "data-toggle": "pill",
+                      to: "/register",
+                      role: "tab",
+                      "aria-controls": "pills-contact",
+                      "aria-selected": "false"
+                    }
+                  },
+                  [_vm._v("Add Event")]
+                )
+              ],
+              1
+            )
+          : _vm._e(),
+        _vm._v(" "),
+        _vm.loggedIn
+          ? _c(
+              "li",
+              { staticClass: "nav-item" },
+              [
+                _c(
+                  "router-link",
+                  {
+                    staticClass: "nav-link authBtn",
+                    attrs: {
+                      id: "pills-contact-tab",
+                      "data-toggle": "pill",
+                      to: "",
+                      role: "tab",
+                      "aria-controls": "pills-contact",
+                      "aria-selected": "false"
+                    },
+                    nativeOn: {
+                      click: function($event) {
+                        return _vm.logout($event)
+                      }
+                    }
+                  },
+                  [_vm._v("Logout")]
+                )
+              ],
+              1
+            )
+          : _vm._e()
       ]
     ),
     _vm._v(" "),
@@ -42667,7 +43039,7 @@ var staticRenderFns = [
           staticClass: "btn btn-outline-success my-2 my-sm-0",
           attrs: { type: "submit" }
         },
-        [_vm._v("\n      Search\n    ")]
+        [_vm._v("\n            Search\n        ")]
       )
     ])
   }
@@ -42742,7 +43114,7 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("p", [
           _vm._v(
-            "\n                Unique, Sustanable and Future Bitcoin is the world’s most-traded cryptocurrency which represents a massive share of the cryptocurrency market. Get started by creating an account today. \n            "
+            "\n                Unique, Sustanable and Future Bitcoin is the world’s\n                most-traded cryptocurrency which represents a massive share\n                of the cryptocurrency market. Get started by creating an\n                account today.\n            "
           )
         ])
       ])
@@ -42945,7 +43317,11 @@ var render = function() {
                                       "btn btn-primary btn-lg btn-block customBtn",
                                     attrs: { type: "submit" }
                                   },
-                                  [_vm._v("Login")]
+                                  [
+                                    _vm._v(
+                                      "\n                                        Login\n                                    "
+                                    )
+                                  ]
                                 )
                               ]
                             )
@@ -42974,7 +43350,7 @@ var staticRenderFns = [
       _vm._v(" "),
       _c("small", { staticClass: "authBtnInner" }, [
         _vm._v(
-          "Equipped with the cutting edge features that make a 21st Century Investment Platform,"
+          "Equipped with the cutting edge features\n                                    that make a 21st Century Investment\n                                    Platform,"
         )
       ]),
       _vm._v(" "),
@@ -43263,7 +43639,7 @@ var render = function() {
                                                         _vm.user
                                                           .password_confirmation,
                                                       expression:
-                                                        "user.password_confirmation"
+                                                        "\n                                                    user.password_confirmation\n                                                "
                                                     }
                                                   ],
                                                   staticClass: "form-control",
@@ -43319,7 +43695,11 @@ var render = function() {
                                       "btn btn-primary btn-lg btn-block customBtn",
                                     attrs: { type: "submit" }
                                   },
-                                  [_vm._v("Signup")]
+                                  [
+                                    _vm._v(
+                                      "\n                                        Signup\n                                    "
+                                    )
+                                  ]
                                 )
                               ]
                             )
@@ -43348,7 +43728,7 @@ var staticRenderFns = [
       _vm._v(" "),
       _c("small", { staticClass: "authBtnInner" }, [
         _vm._v(
-          "Equipped with the cutting edge features that make a 21st Century Investment Platform,"
+          "Equipped with the cutting edge features\n                                    that make a 21st Century Investment\n                                    Platform,"
         )
       ]),
       _vm._v(" "),
@@ -43391,9 +43771,9 @@ var render = function() {
             _c("div", { staticClass: "container" }, [
               _c("small", { staticClass: "authBtnInner pb-3" }, [
                 _vm._v(
-                  "\n                  " +
+                  "\n                            " +
                     _vm._s(_vm.event.description) +
-                    "\n                "
+                    "\n                        "
                 )
               ])
             ])
@@ -43482,7 +43862,7 @@ var staticRenderFns = [
                     _vm._v(" "),
                     _c("small", { staticClass: "authBtnInner" }, [
                       _vm._v(
-                        "Equipped with the cutting edge features that make a 21st Century Investment Platform,"
+                        "Equipped with the cutting edge features\n                                    that make a 21st Century Investment\n                                    Platform,"
                       )
                     ]),
                     _vm._v(" "),
@@ -43519,7 +43899,11 @@ var staticRenderFns = [
                           "btn btn-primary btn-lg btn-block customBtn",
                         attrs: { type: "button" }
                       },
-                      [_vm._v("Save Events")]
+                      [
+                        _vm._v(
+                          "\n                                    Save Events\n                                "
+                        )
+                      ]
                     )
                   ])
                 ])
@@ -43616,7 +44000,11 @@ var render = function() {
             _c(
               "div",
               { staticClass: "card" },
-              [_c("EventTable", { attrs: { events: _vm.events.data } })],
+              [
+                _c("EventTable", {
+                  attrs: { events: _vm.events.data, isAdmin: true }
+                })
+              ],
               1
             )
           ])
@@ -43706,7 +44094,16 @@ var render = function() {
       _vm._v(" "),
       _c("div", { staticClass: "row pb-5" }, [
         _c("div", { staticClass: "col-md-12" }, [
-          _c("div", { staticClass: "card" }, [_c("event-table")], 1)
+          _c(
+            "div",
+            { staticClass: "card" },
+            [
+              _c("event-table", {
+                attrs: { events: _vm.userevents.data, isAdmin: false }
+              })
+            ],
+            1
+          )
         ])
       ])
     ])
@@ -60288,7 +60685,7 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 var app = new Vue({
-  el: '#app',
+  el: "#app",
   store: _store_js__WEBPACK_IMPORTED_MODULE_1__["default"],
   router: _routes_js__WEBPACK_IMPORTED_MODULE_0__["default"],
   render: function render(h) {
@@ -60326,7 +60723,7 @@ try {
 
 
 window.axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+window.axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
  * for events that are broadcast by Laravel. Echo and event broadcasting
@@ -60776,7 +61173,7 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
 
-var resource = '/auth';
+var resource = "/auth";
 /* harmony default export */ __webpack_exports__["default"] = ({
   login: function login(payload) {
     return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
@@ -60817,6 +61214,26 @@ var resource = '/auth';
         }
       }, _callee2);
     }))();
+  },
+  logout: function logout() {
+    return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3() {
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
+        while (1) {
+          switch (_context3.prev = _context3.next) {
+            case 0:
+              _context3.next = 2;
+              return _clients_AxiosClient__WEBPACK_IMPORTED_MODULE_1__["default"].post("".concat(resource, "/logout"));
+
+            case 2:
+              return _context3.abrupt("return", _context3.sent);
+
+            case 3:
+            case "end":
+              return _context3.stop();
+          }
+        }
+      }, _callee3);
+    }))();
   }
 });
 
@@ -60833,10 +61250,13 @@ var resource = '/auth';
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _clients_AxiosClient__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./clients/AxiosClient */ "./resources/js/repositories/clients/AxiosClient.js");
 
-var resource = '/events';
+var resource = "/events";
 /* harmony default export */ __webpack_exports__["default"] = ({
   get: function get() {
     return _clients_AxiosClient__WEBPACK_IMPORTED_MODULE_0__["default"].get("".concat(resource));
+  },
+  getUserEvents: function getUserEvents(id) {
+    return _clients_AxiosClient__WEBPACK_IMPORTED_MODULE_0__["default"].get("users/".concat(id).concat(resource));
   },
   getProduct: function getProduct(id) {
     return _clients_AxiosClient__WEBPACK_IMPORTED_MODULE_0__["default"].get("".concat(resource, "/").concat(id));
@@ -60868,8 +61288,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var repositories = {
-  'events': _EventRepository__WEBPACK_IMPORTED_MODULE_0__["default"],
-  'auth': _AuthRepository__WEBPACK_IMPORTED_MODULE_1__["default"]
+  events: _EventRepository__WEBPACK_IMPORTED_MODULE_0__["default"],
+  auth: _AuthRepository__WEBPACK_IMPORTED_MODULE_1__["default"]
 };
 /* harmony default export */ __webpack_exports__["default"] = ({
   get: function get(name) {
@@ -60948,54 +61368,49 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
   // mode: 'history',
   // linkActiveClass: 'active',
   routes: [{
-    path: '/',
-    name: 'home',
+    path: "/",
+    name: "home",
     component: _views_Home__WEBPACK_IMPORTED_MODULE_3__["default"]
   }, {
-    path: '/login',
-    name: 'login',
+    path: "/login",
+    name: "login",
     component: _views_Login__WEBPACK_IMPORTED_MODULE_4__["default"]
   }, {
-    path: '/register',
-    name: 'register',
+    path: "/register",
+    name: "register",
     component: _views_Register__WEBPACK_IMPORTED_MODULE_5__["default"]
   }, {
-    path: '/ticket/:id',
-    name: 'ticket',
+    path: "/ticket/:id",
+    name: "ticket",
     component: _views_Ticket__WEBPACK_IMPORTED_MODULE_6__["default"]
   }, {
-    path: '/user/:id',
-    name: 'user',
+    path: "/user/:id",
+    name: "user",
     component: _views_dashboard_User__WEBPACK_IMPORTED_MODULE_7__["default"],
     meta: {
       requiresAuth: true
     },
     beforeEnter: function beforeEnter(to, from, next) {
-      if (_store__WEBPACK_IMPORTED_MODULE_2__["default"].getters["isUser"]) {
-        next({
-          name: 'user',
-          params: {
-            id: _store__WEBPACK_IMPORTED_MODULE_2__["default"].state.user.id
-          }
-        });
+      if (_store__WEBPACK_IMPORTED_MODULE_2__["default"].getters["isUser"] && parseInt(_store__WEBPACK_IMPORTED_MODULE_2__["default"].state.user.id) === parseInt(to.params.id)) {
+        next();
       } else {
         next({
-          name: 'login'
+          name: "login"
         });
       }
     }
   }, {
-    path: '/admin',
-    name: 'admin',
+    path: "/admin",
+    name: "admin",
     component: _layouts_Admin__WEBPACK_IMPORTED_MODULE_8__["default"],
     meta: {
       requiresAuth: true
     },
     children: [{
-      path: 'add',
+      path: "add",
       component: _views_dashboard_Add__WEBPACK_IMPORTED_MODULE_9__["default"]
     }, {
-      path: '/',
+      path: "/",
       component: _views_dashboard_Admin__WEBPACK_IMPORTED_MODULE_10__["default"]
     }],
     beforeEnter: function beforeEnter(to, from, next) {
@@ -61003,7 +61418,7 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
         next();
       } else {
         next({
-          name: 'login'
+          name: "login"
         });
       }
     }
@@ -61015,7 +61430,7 @@ router.beforeEach(function (to, from, next) {
   })) {
     if (!_store__WEBPACK_IMPORTED_MODULE_2__["default"].state.loggedIn) {
       next({
-        path: '/login',
+        path: "/login",
         query: {
           redirect: to.fullPath
         }
@@ -61027,26 +61442,6 @@ router.beforeEach(function (to, from, next) {
     next();
   }
 });
-
-function redirect(next) {
-  console.log('ws');
-
-  if (_store__WEBPACK_IMPORTED_MODULE_2__["default"].getters["isAdmin"]) {
-    next();
-  } else if (_store__WEBPACK_IMPORTED_MODULE_2__["default"].getters["isUser"]) {
-    next({
-      name: 'user',
-      params: {
-        id: _store__WEBPACK_IMPORTED_MODULE_2__["default"].state.user.id
-      }
-    });
-  } else {
-    next({
-      name: "login"
-    });
-  }
-}
-
 /* harmony default export */ __webpack_exports__["default"] = (router);
 
 /***/ }),
@@ -61082,6 +61477,7 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_2__["default"].Store({
   state: {
     events: [],
     user: [],
+    userevents: [],
     loggedIn: false,
     insights: []
   },
@@ -61110,7 +61506,7 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_2__["default"].Store({
         }, _callee);
       }))();
     },
-    login: function login(_ref2, payload) {
+    getUserEvents: function getUserEvents(_ref2, id) {
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
         var commit;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
@@ -61120,11 +61516,11 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_2__["default"].Store({
                 commit = _ref2.commit;
                 _context2.t0 = commit;
                 _context2.next = 4;
-                return AuthRepository.login(payload);
+                return EventRepository.getUserEvents(id);
 
               case 4:
                 _context2.t1 = _context2.sent;
-                (0, _context2.t0)("STORE_LOGGED_IN_USER", _context2.t1);
+                (0, _context2.t0)("STORE_USER_EVENTS", _context2.t1);
 
               case 6:
               case "end":
@@ -61134,7 +61530,7 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_2__["default"].Store({
         }, _callee2);
       }))();
     },
-    register: function register(_ref3, payload) {
+    login: function login(_ref3, payload) {
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3() {
         var commit;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
@@ -61142,48 +61538,84 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_2__["default"].Store({
             switch (_context3.prev = _context3.next) {
               case 0:
                 commit = _ref3.commit;
-                _context3.next = 3;
-                return AuthRepository.register(payload);
-
-              case 3:
-                return _context3.abrupt("return", _context3.sent);
+                _context3.t0 = commit;
+                _context3.next = 4;
+                return AuthRepository.login(payload);
 
               case 4:
+                _context3.t1 = _context3.sent;
+                (0, _context3.t0)("STORE_LOGGED_IN_USER", _context3.t1);
+
+              case 6:
               case "end":
                 return _context3.stop();
             }
           }
         }, _callee3);
       }))();
-    } // async getProductCategories({
-    //     commit
-    // }) {
-    //     commit("loadProductCategories", await ProductRepository.getProductCategories());
-    // },
-    // async loadSizeAttributes({
-    //     commit,
-    // }, payload) {
-    //     commit("loadSizeAttributes", await AttributeRepository.find(payload.id));
-    // },
-    // async loadColorAttributes({
-    //     commit,
-    // }, payload) {
-    //     commit("loadColorAttributes", await AttributeRepository.find(payload.id));
-    // },
-    // async loadReviews({
-    //     commit
-    // }, payload) {
-    //     commit("loadReviews", await ReviewRepository.getReviewsByProductId(payload.id));
-    // }
+    },
+    logout: function logout(_ref4) {
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee4() {
+        var commit;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee4$(_context4) {
+          while (1) {
+            switch (_context4.prev = _context4.next) {
+              case 0:
+                commit = _ref4.commit;
+                _context4.prev = 1;
+                _context4.next = 4;
+                return AuthRepository.logout();
 
+              case 4:
+                commit("STORE_LOGGED_OUT_USER", true);
+                return _context4.abrupt("return", true);
+
+              case 8:
+                _context4.prev = 8;
+                _context4.t0 = _context4["catch"](1);
+                console.log(_context4.t0);
+
+              case 11:
+                return _context4.abrupt("return", false);
+
+              case 12:
+              case "end":
+                return _context4.stop();
+            }
+          }
+        }, _callee4, null, [[1, 8]]);
+      }))();
+    },
+    register: function register(_ref5, payload) {
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee5() {
+        var commit;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee5$(_context5) {
+          while (1) {
+            switch (_context5.prev = _context5.next) {
+              case 0:
+                commit = _ref5.commit;
+                _context5.next = 3;
+                return AuthRepository.register(payload);
+
+              case 3:
+                return _context5.abrupt("return", _context5.sent);
+
+              case 4:
+              case "end":
+                return _context5.stop();
+            }
+          }
+        }, _callee5);
+      }))();
+    }
   },
   mutations: {
     STORE_LOGGED_IN_USER: function STORE_LOGGED_IN_USER(state, response) {
       var data = response.data;
 
       if (data) {
-        localStorage.setItem('token', data.access_token);
-        localStorage.setItem('user', data.user);
+        localStorage.setItem("token", data.access_token);
+        localStorage.setItem("user", data.user);
         state.user = data.user;
         state.token = data.access_token;
         state.insights = data.insights;
@@ -61193,37 +61625,21 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_2__["default"].Store({
     STORE_EVENTS: function STORE_EVENTS(state, response) {
       var data = response.data;
       state.events = data;
-    } // loadCartProducts: (state) => {
-    //     state.carts = Vue.prototype.$cart.getCarts();
-    // },
-    // removeCartProduct: (state, product) => {
-    //     state.carts = Vue.prototype.$cart.remove(product);
-    // },
-    // loadProductCategories: (state, response) => {
-    //     const {
-    //         data
-    //     } = response;
-    //     state.productCategories = data
-    // },
-    // loadSizeAttributes: (state, response) => {
-    //     const {
-    //         data
-    //     } = response;
-    //     state.sizeAttributes = data;
-    // },
-    // loadColorAttributes: (state, response) => {
-    //     const {
-    //         data
-    //     } = response;
-    //     state.colorAttributes = data;
-    // },
-    // loadReviews: (state, response) => {
-    //     const {
-    //         data
-    //     } = response;
-    //     state.reviews = data;
-    // }
-
+    },
+    STORE_USER_EVENTS: function STORE_USER_EVENTS(state, response) {
+      var data = response.data;
+      state.userevents = data;
+    },
+    STORE_LOGGED_OUT_USER: function STORE_LOGGED_OUT_USER(state, response) {
+      if (response) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+        state.user = {};
+        state.token = null;
+        state.insights = null;
+        state.loggedIn = false;
+      }
+    }
   },
   getters: {
     getEvent: function getEvent(state) {
@@ -61263,20 +61679,14 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
- // import en from 'vee-validate/dist/locale/en';
 
 
-Object(vee_validate__WEBPACK_IMPORTED_MODULE_1__["extend"])('required', _objectSpread(_objectSpread({}, vee_validate_dist_rules__WEBPACK_IMPORTED_MODULE_0__["required"]), {}, {
-  message: 'The {_field_} is required'
+Object(vee_validate__WEBPACK_IMPORTED_MODULE_1__["extend"])("required", _objectSpread(_objectSpread({}, vee_validate_dist_rules__WEBPACK_IMPORTED_MODULE_0__["required"]), {}, {
+  message: "The {_field_} is required"
 }));
-Object(vee_validate__WEBPACK_IMPORTED_MODULE_1__["extend"])('email', _objectSpread(_objectSpread({}, vee_validate_dist_rules__WEBPACK_IMPORTED_MODULE_0__["email"]), {}, {
-  message: 'The {_field_} field must be a valid email'
-})); // for (let rule in rules) {
-//   extend(rule, {
-//     ...rules[rule],
-//     message: en.messages[rule]
-//   });
-//}
+Object(vee_validate__WEBPACK_IMPORTED_MODULE_1__["extend"])("email", _objectSpread(_objectSpread({}, vee_validate_dist_rules__WEBPACK_IMPORTED_MODULE_0__["email"]), {}, {
+  message: "The {_field_} field must be a valid email"
+}));
 
 /***/ }),
 

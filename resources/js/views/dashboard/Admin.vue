@@ -36,7 +36,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card">
-                            <EventTable :events="events.data" />
+                            <EventTable :events="events.data" :isAdmin="true" />
                         </div>
                     </div>
                 </div>

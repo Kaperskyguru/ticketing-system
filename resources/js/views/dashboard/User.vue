@@ -32,7 +32,10 @@
             <div class="row pb-5">
                 <div class="col-md-12">
                     <div class="card">
-                        <event-table />
+                        <event-table
+                            :events="userevents.data"
+                            :isAdmin="false"
+                        />
                     </div>
                 </div>
             </div>
@@ -54,7 +57,11 @@ export default {
     },
 
     computed: {
-        ...mapState(["insights"])
+        ...mapState(["insights", "userevents"])
+    },
+
+    beforeCreate() {
+        this.$store.dispatch("getUserEvents", this.$store.state.user.id);
     }
 };
 </script>

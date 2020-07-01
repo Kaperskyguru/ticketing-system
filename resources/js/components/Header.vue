@@ -13,7 +13,7 @@
                     >Home</router-link
                 >
             </li>
-            <li class="nav-item">
+            <li class="nav-item" v-if="!loggedIn">
                 <router-link
                     class="nav-link authBtn"
                     id="pills-profile-tab"
@@ -25,7 +25,7 @@
                     >Login</router-link
                 >
             </li>
-            <li class="nav-item">
+            <li class="nav-item" v-if="!loggedIn">
                 <router-link
                     class="nav-link authBtn"
                     id="pills-contact-tab"
@@ -35,6 +35,31 @@
                     aria-controls="pills-contact"
                     aria-selected="false"
                     >Register</router-link
+                >
+            </li>
+            <li class="nav-item" v-if="isAdmin">
+                <router-link
+                    class="nav-link authBtn"
+                    id="pills-contact-tab"
+                    data-toggle="pill"
+                    to="/register"
+                    role="tab"
+                    aria-controls="pills-contact"
+                    aria-selected="false"
+                    >Add Event</router-link
+                >
+            </li>
+            <li class="nav-item" v-if="loggedIn">
+                <router-link
+                    class="nav-link authBtn"
+                    id="pills-contact-tab"
+                    data-toggle="pill"
+                    to=""
+                    @click.native="logout"
+                    role="tab"
+                    aria-controls="pills-contact"
+                    aria-selected="false"
+                    >Logout</router-link
                 >
             </li>
         </ul>
@@ -52,5 +77,30 @@
     </nav>
 </template>
 <script>
-export default {};
+export default {
+    computed: {
+        loggedIn() {
+            console.log(this.$store.state.loggedIn);
+            return this.$store.state.loggedIn;
+        },
+
+        isAdmin() {
+            return this.loggedIn && this.$store.getters["isAdmin"];
+        }
+    },
+
+    methods: {
+        async logout() {
+            try {
+                const result = await this.$store.dispatch("logout");
+                if (result) {
+                    return this.$router.push("/");
+                }
+                return this.$router.push("login");
+            } catch (error) {
+                console.log(error);
+            }
+        }
+    }
+};
 </script>
