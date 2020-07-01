@@ -147,8 +147,8 @@ class EventController extends Controller
     {
         if (request()->user()->tokenCan('can-delete')) {
             $cachedEvent = $this->findEvent($id);
-
-            if (!$cachedEvent && $cachedEvent->delete()) {
+            
+            if ($cachedEvent->delete()) {
                 Log::info('Deleted event with id: ' . $id);
 
                 if (Cache::has('event_id_' . $id)) {
