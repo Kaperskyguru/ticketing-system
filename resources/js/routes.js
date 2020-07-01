@@ -42,11 +42,11 @@ const router = new VueRouter({
             component: User,
             meta: { requiresAuth: true },
             beforeEnter(to, from, next) {
-                if (store.getters["isUser"]) {
-                    next({
-                        name: "user",
-                        params: { id: store.state.user.id }
-                    });
+                if (
+                    store.getters["isUser"] &&
+                    parseInt(store.state.user.id) === parseInt(to.params.id)
+                ) {
+                    next();
                 } else {
                     next({
                         name: "login"

@@ -8,5 +8,9 @@ export default {
 
     async register(payload) {
         return await Http.post(`${resource}/register`, payload);
+    },
+
+    async logout() {
+        return await Http.post(`${resource}/logout`);
     }
 };

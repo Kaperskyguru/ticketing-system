@@ -50,6 +50,35 @@ class EventController extends Controller
     }
 
     /**
+     * Display a listing of user resources.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function userEvents(Request $request, $user)
+    {
+        $page = $request->has('page') ? $request->query('page') : 1;
+        $size = $request->has('size') ? $request->query('size') : 10;
+
+        $userEventIds = UserEvent::where('user_id', $user)->pluck('event_id');
+
+        $events = Cache::remember('events_user_id_'.$user.'_page_' . $page.'_size_'.$size, $this->duration, function () use ($size, $userEventIds) {
+            $data = Event::whereIn('id', $userEventIds)->latest()->paginate($size);
+            if ($data->items()) {
+                return $data;
+            }
+            return null;
+        });
+        
+        if ($events) {
+            Log::info('All specific user events retrieved and cached');
+            return EventResource::collection($events);
+        }
+
+        Log::error('User events not found');
+        return $this->response('User events not found', 404);
+    }
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request

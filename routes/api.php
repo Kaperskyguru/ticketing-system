@@ -21,7 +21,8 @@ Route::group(['prefix' => 'v1'], function () {
 
     Route::group(['middleware' => 'auth:api'], function () {
         Route::post('auth/logout', "AuthController@logout");
-        // Route::resource('events', "EventController");
+        Route::resource('events', "EventController")->except(['index']);
+        Route::get('users/{user}/events', "EventController@userEvents");
         Route::post('events/{id}/ticket', "EventController@buy");
         Route::post('events/{id}/join', "EventController@join");
     });

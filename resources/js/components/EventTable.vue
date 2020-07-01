@@ -20,8 +20,29 @@
                 <td>{{ event.ticket_price }}</td>
                 <td>{{ event.event_date }}</td>
                 <td>
-                    <button type="button" class="btn btn-primary">View</button>
-                    <button type="button" class="btn btn-danger">Delete</button>
+                    <button
+                        @click="viewEvent(event.id)"
+                        type="button"
+                        class="btn btn-primary"
+                    >
+                        View
+                    </button>
+                    <button
+                        @click="UpdateEvent(event.id)"
+                        type="button"
+                        class="btn btn-info"
+                        v-if="isAdmin"
+                    >
+                        Update
+                    </button>
+                    <button
+                        @click="deleteEvent(event.id)"
+                        type="button"
+                        class="btn btn-danger"
+                        v-if="isAdmin"
+                    >
+                        Delete
+                    </button>
                 </td>
             </tr>
         </tbody>
@@ -32,7 +53,7 @@
 export default {
     name: "EventTable",
 
-    props: ["events"],
+    props: ["events", "isAdmin"],
 
     data() {
         return {};
@@ -45,6 +66,12 @@ export default {
             } else {
                 return text;
             }
+        },
+        viewEvent(id) {
+            return this.$router.push({ name: "ticket", params: { id } });
+        },
+        deleteEvent(id) {
+            // Dispatch
         }
     }
 };

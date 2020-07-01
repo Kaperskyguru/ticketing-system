@@ -11,6 +11,7 @@ const store = new Vuex.Store({
     state: {
         events: [],
         user: [],
+        userevents: [],
         loggedIn: false,
         insights: []
     },
@@ -20,8 +21,26 @@ const store = new Vuex.Store({
             commit("STORE_EVENTS", await EventRepository.get());
         },
 
+        async getUserEvents({ commit }, id) {
+            commit(
+                "STORE_USER_EVENTS",
+                await EventRepository.getUserEvents(id)
+            );
+        },
+
         async login({ commit }, payload) {
             commit("STORE_LOGGED_IN_USER", await AuthRepository.login(payload));
+        },
+
+        async logout({ commit }) {
+            try {
+                await AuthRepository.logout();
+                commit("STORE_LOGGED_OUT_USER", true);
+                return true;
+            } catch (error) {
+                console.log(error);
+            }
+            return false;
         },
 
         async register({ commit }, payload) {
@@ -46,6 +65,21 @@ const store = new Vuex.Store({
         STORE_EVENTS: (state, response) => {
             const { data } = response;
             state.events = data;
+        },
+
+        STORE_USER_EVENTS: (state, response) => {
+            const { data } = response;
+            state.userevents = data;
+        },
+        STORE_LOGGED_OUT_USER: (state, response) => {
+            if (response) {
+                localStorage.removeItem("token");
+                localStorage.removeItem("user");
+                state.user = {};
+                state.token = null;
+                state.insights = null;
+                state.loggedIn = false;
+            }
         }
     },
 
