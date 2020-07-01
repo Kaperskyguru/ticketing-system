@@ -1,11 +1,11 @@
 <template>
   <div class="text-center banner p-3">
-    <div class="container p-5">
-      <div class="row p-5">
+    <div class="container">
+      <div class="row">
         <div class="col-md-12">
-          <div class="card card-custom">
+          <div class="card card-custom p-5">
             <div class="container p-5">
-              <div class="p-5">
+              <div class="pb-5">
                 <div class="text-center pb-3">
                   <h5 class="authBtn">Login</h5>
                   <small class="authBtnInner">

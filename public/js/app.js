@@ -2660,17 +2660,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Register",
@@ -2769,9 +2758,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Ticket",
-  data: function data() {
-    return {};
-  },
   computed: {
     event: function event() {
       return this.$store.getters.getEvent(this.$route.params.id);
@@ -43362,14 +43348,14 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "text-center banner p-3" }, [
-    _c("div", { staticClass: "container p-5" }, [
-      _c("div", { staticClass: "row p-5" }, [
+    _c("div", { staticClass: "container" }, [
+      _c("div", { staticClass: "row" }, [
         _c("div", { staticClass: "col-md-12" }, [
-          _c("div", { staticClass: "card card-custom" }, [
+          _c("div", { staticClass: "card card-custom p-5" }, [
             _c("div", { staticClass: "container p-5" }, [
               _c(
                 "div",
-                { staticClass: "p-5" },
+                { staticClass: "pb-5" },
                 [
                   _vm._m(0),
                   _vm._v(" "),
@@ -43607,14 +43593,14 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "text-center banner p-3" }, [
-    _c("div", { staticClass: "container p-5" }, [
-      _c("div", { staticClass: "row p-5" }, [
+    _c("div", { staticClass: "container" }, [
+      _c("div", { staticClass: "row" }, [
         _c("div", { staticClass: "col-md-12" }, [
-          _c("div", { staticClass: "card card-custom" }, [
-            _c("div", { staticClass: "container p-5" }, [
+          _c("div", { staticClass: "card card-custom p-5" }, [
+            _c("div", { staticClass: "container" }, [
               _c(
                 "div",
-                { staticClass: "p-5" },
+                { staticClass: "pb-5" },
                 [
                   _vm._m(0),
                   _vm._v(" "),
@@ -43690,7 +43676,13 @@ var render = function() {
                                                   {
                                                     staticClass: "text-danger"
                                                   },
-                                                  [_vm._v(_vm._s(errors[0]))]
+                                                  [
+                                                    _vm._v(
+                                                      "\n                        " +
+                                                        _vm._s(errors[0]) +
+                                                        "\n                      "
+                                                    )
+                                                  ]
                                                 )
                                               ]
                                             }
@@ -43758,7 +43750,13 @@ var render = function() {
                                                   {
                                                     staticClass: "text-danger"
                                                   },
-                                                  [_vm._v(_vm._s(errors[0]))]
+                                                  [
+                                                    _vm._v(
+                                                      "\n                        " +
+                                                        _vm._s(errors[0]) +
+                                                        "\n                      "
+                                                    )
+                                                  ]
                                                 )
                                               ]
                                             }
@@ -43827,7 +43825,13 @@ var render = function() {
                                                   {
                                                     staticClass: "text-danger"
                                                   },
-                                                  [_vm._v(_vm._s(errors[0]))]
+                                                  [
+                                                    _vm._v(
+                                                      "\n                        " +
+                                                        _vm._s(errors[0]) +
+                                                        "\n                      "
+                                                    )
+                                                  ]
                                                 )
                                               ]
                                             }
@@ -43866,7 +43870,7 @@ var render = function() {
                                                         _vm.user
                                                           .password_confirmation,
                                                       expression:
-                                                        "\n                                                    user.password_confirmation\n                                                "
+                                                        "\n                                                      user.password_confirmation\n                                                  "
                                                     }
                                                   ],
                                                   staticClass: "form-control",
@@ -43901,7 +43905,13 @@ var render = function() {
                                                   {
                                                     staticClass: "text-danger"
                                                   },
-                                                  [_vm._v(_vm._s(errors[0]))]
+                                                  [
+                                                    _vm._v(
+                                                      "\n                        " +
+                                                        _vm._s(errors[0]) +
+                                                        "\n                      "
+                                                    )
+                                                  ]
                                                 )
                                               ]
                                             }
@@ -43922,11 +43932,7 @@ var render = function() {
                                       "btn btn-primary btn-lg btn-block customBtn",
                                     attrs: { type: "submit" }
                                   },
-                                  [
-                                    _vm._v(
-                                      "\n                                        Signup\n                                    "
-                                    )
-                                  ]
+                                  [_vm._v("Signup")]
                                 )
                               ]
                             )
@@ -43955,7 +43961,7 @@ var staticRenderFns = [
       _vm._v(" "),
       _c("small", { staticClass: "authBtnInner" }, [
         _vm._v(
-          "Equipped with the cutting edge features\n                                    that make a 21st Century Investment\n                                    Platform,"
+          "\n                  Equipped with the cutting edge features\n                  that make a 21st Century Investment\n                  Platform,\n                "
         )
       ]),
       _vm._v(" "),
@@ -43985,9 +43991,9 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "text-center banner p-3 pb-5" }, [
-    _c("div", { staticClass: "container p-5 pb-5" }, [
-      _c("div", { staticClass: "row p-5 pb-5" }, [
-        _c("div", { staticClass: "col-md-8" }, [
+    _c("div", { staticClass: "container pb-5" }, [
+      _c("div", { staticClass: "row pb-5" }, [
+        _c("div", { staticClass: "col-md-8 col-12 pb-5" }, [
           _c("div", { staticClass: "card card-custom p-5" }, [
             _c("h5", { staticClass: "authBtn" }, [
               _vm._v(_vm._s(_vm.event.title))
@@ -44003,7 +44009,7 @@ var render = function() {
           ])
         ]),
         _vm._v(" "),
-        _c("div", { staticClass: "col-md-4" }, [
+        _c("div", { staticClass: "col-md-4 col-12" }, [
           _c(
             "div",
             { staticClass: "card card-custom p-5" },
