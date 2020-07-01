@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseDomain = "http://127.0.0.1:8000";
+const baseDomain = window.location.origin || "http://127.0.0.1:8000";
 const baseURL = `${baseDomain}/api/v1`;
 
 const httpsClient = axios.create({
