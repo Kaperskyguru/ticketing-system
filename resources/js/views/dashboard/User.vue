@@ -8,12 +8,12 @@
         <div class="container pb-5">
             <div class="row pb-5">
                 <div class="col-md-6">
-                	<counter title="Total Events" :value="2"></counter>
+                	<counter title="Total Events" :value="insights.totalEventJoined"></counter>
                 </br>
                 </div>
                 
                 <div class="col-md-6">
-                	<counter title="Total Amount Spent" :value="243" symbol="$"></counter>
+                	<counter title="Total Amount Spent" :value="insights.totalAmountSpent" symbol="$"></counter>
                 </div>
                 <br />
             </div>
@@ -38,6 +38,8 @@
 <script>
 import Counter from '../../components/Counter'
 import EventTable from '../../components/EventTable'
+import { mapState } from 'vuex';
+
 export default {
 
   name: 'User',
@@ -47,7 +49,11 @@ export default {
     return {
 
     }
-  }
+  },
+
+  computed:{
+    ...mapState(['insights'])
+  },
 };
 </script>
 

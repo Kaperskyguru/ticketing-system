@@ -9,7 +9,7 @@ const httpsClient = axios.create({
 
 httpsClient.interceptors.request.use(
     config => {
-      let token = localStorage.getItem("key");
+      let token = localStorage.getItem("token");
       if (token) {
         config.headers["Authorization"] = `Bearer ${token}`;
       }

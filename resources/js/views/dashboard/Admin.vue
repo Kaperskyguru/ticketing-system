@@ -9,27 +9,26 @@
         <div class="container pb-5">
             <div class="row pb-5">
                 <div class="col-md-4">
-                	<counter title="Total Events" :value="70"></counter>
+                	<counter title="Total Events" :value="insights.totalEvents"></counter>
                 </br>
                 </div>
                 
                 <div class="col-md-4">
-                	<counter title="Joined Events" :value="20"></counter>
+                	<counter title="Joined Events" :value="insights.totalEventJoined"></counter>
                 </div>
                 <br />
                 <div class="col-md-4">
-                	<counter title="Upcoming Events" :value="60"></counter>
+                	<counter title="Upcoming Events" :value="insights.totalUpcomingEvents"></counter>
                 </br>
             </div>
         </div>
         <br><br><br><br>
-<router-view></router-view>
         <div class="container pt-5">
             <h5 class="pb-5">All Events</h5>
             <div class="row">
                 <div class="col-md-12">
                     <div class="card">
-                        <EventTable />
+                        <EventTable :events="events.data" />
                     </div>
                 </div>
             </div>
@@ -42,6 +41,8 @@
 <script>
 import Counter from '../../components/Counter'
 import EventTable from '../../components/EventTable'
+import { mapState } from 'vuex';
+
 export default {
 
   name: 'Admin',
@@ -51,7 +52,12 @@ export default {
     return {
 
     }
-  }
+  },
+
+  computed:{
+    ...mapState(['insights', 'events'])
+  },
+
 };
 </script>
 

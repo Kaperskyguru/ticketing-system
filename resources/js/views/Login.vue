@@ -12,15 +12,23 @@
                       
                       <hr>
                   </div>
-                  <form>
-                    <div class="form-group">
-                        <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Email">
-                    </div>
-                    <div class="form-group">
-                        <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="Password">
-                    </div>
-                    <button type="button" class="btn btn-primary btn-lg btn-block customBtn">Login</button>
-                    </form>
+                  <ValidationObserver v-slot="{ handleSubmit }" ref="form">
+                    <form @submit.prevent="handleSubmit(login)">
+                      <div class="form-group">
+                        <ValidationProvider name="Email" rules="required|email" v-slot="{ errors }">
+                            <input type="email" v-model="user.email" class="form-control" placeholder="Email">
+                            <span class="text-danger">{{ errors[0] }}</span>
+                        </ValidationProvider>
+                      </div>
+                      <div class="form-group">
+                        <ValidationProvider name="Password" rules="required" v-slot="{ errors }">
+                            <input type="password" v-model="user.password" class="form-control" placeholder="Password">
+                            <span class="text-danger">{{ errors[0] }}</span>
+                        </ValidationProvider>
+                      </div>
+                      <button type="submit" class="btn btn-primary btn-lg btn-block customBtn">Login</button>
+                      </form>
+                    </ValidationObserver>
                   </div>
               </div>
             </div>
@@ -32,13 +40,25 @@
 </template>
 
 <script>
+import { ValidationProvider, ValidationObserver } from 'vee-validate'
 export default {
-
   name: 'Login',
+  components: { ValidationProvider, ValidationObserver  },
 
   data () {
     return {
+      user: {}
+    }
+  },
 
+  methods:{
+    async login(){
+      try{
+        await this.$store.dispatch('login', this.user)
+        this.$router.push('/admin/')
+      }catch(err){
+        console.log(err)
+      }
     }
   }
 };

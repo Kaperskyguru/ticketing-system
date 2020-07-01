@@ -10,6 +10,9 @@ use App\Http\Requests\StoreUser;
 use App\Http\Requests\ValidateLogin;
 use App\Notifications\RegistrationNotification;
 use App\User;
+use App\UserEvent;
+use App\Ticket;
+use App\Event;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Auth\AuthenticationException;
@@ -84,10 +87,14 @@ class AuthController extends Controller
 
         $token->save();
 
+        // Generate Insights
+        $insights = $this->generateInsights($user);
+
         Log::info('User with id: ' . $user->id . ' logged in successfully');
 
         return response()->json([
             'user' => $user,
+            'insights' => $insights,
             'access_token' => $tokenResult->accessToken,
             'token_type' => 'Bearer',
             'expires_at' => Carbon::parse(
@@ -110,5 +117,41 @@ class AuthController extends Controller
         }
         Log::debug('User with id: ' . $request->user()->id . ' could not logout, Internal Server Error');
         return $this->response('Internal Server Error, User not logged out', 500);
+    }
+
+    private function generateInsights($user)
+    {
+       if($user->is_admin){
+        return $this->generateAdminInsights();
+       } else {
+        return $this->generateUserInsights($user);
+       }
+    }
+
+    private function generateAdminInsights()
+    {
+        $totalEvents = Event::count();
+        $totalEventJoined = UserEvent::distinct('event_id')->count();
+        $totalUpcomingEvents = Event::where('date', '>', now())->count();
+
+        $insights = [
+            'totalEvents' => $totalEvents,
+            'totalEventJoined' => $totalEventJoined,
+            'totalUpcomingEvents' => $totalUpcomingEvents
+        ]; 
+        return $insights;
+    }
+
+    public function generateUserInsights($user)
+    {
+        $totalEventJoined = UserEvent::where('user_id', $user->id)->count();
+        $totalAmountSpent = Ticket::where('user_id', $user->id)->sum('amount');
+
+        $insights = [
+            'totalEventJoined' => $totalEventJoined,
+            'totalAmountSpent' => $totalAmountSpent,
+        ]; 
+        return $insights;
+
     }
 }

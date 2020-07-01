@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
+import store from './store'
 Vue.use(VueRouter);
 
 import Home from './views/Home'
@@ -36,27 +37,79 @@ const router = new VueRouter({
             component: Ticket
         },
         {
-            path: '/user',
+            path: '/user/:id',
             name: 'user',
-            component: User
+            component: User,
+            meta: { requiresAuth: true },
+            beforeEnter(to, from, next){
+                if (store.getters["isUser"]) {
+                    next({
+                        name: 'user',
+                        params:{ id: store.state.user.id }
+                    })
+                } else {
+                    next({
+                        name:'login'
+                    });
+                }
+            },
         },
         {
             path: '/admin',
             name: 'admin',
             component: Admin,
+            meta: { requiresAuth: true },
             children:[
             	{
 		            path: 'add',
-		            name: 'admin-add',
 		            component: Add
         		},
         		{
 		            path: '/',
-		            name: 'admin-home',
 		            component: AdminHome
         		},
-            ]
+            ],
+            beforeEnter(to, from, next){
+                if (store.getters["isAdmin"]) {
+                    next()
+                } else {
+                   next({
+                        name: 'login',
+                    }) 
+                }
+            },
         },
     ],
 });
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    if (!store.state.loggedIn) {
+      next({
+        path: '/login',
+        query: { redirect: to.fullPath }
+      })
+    } else {
+      next()
+    }
+  } else {
+    next()
+  }
+})
+
+function redirect(next) {
+    console.log('ws')
+    if (store.getters["isAdmin"]) {
+        next()
+    } else if(store.getters["isUser"]) {
+        next({
+          name: 'user',
+          params:{ id: store.state.user.id }
+        });
+    } else {
+        next({
+          name: "login"
+        });
+    }
+}
 export default router;
