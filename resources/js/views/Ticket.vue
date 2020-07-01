@@ -1,8 +1,8 @@
 <template>
   <div class="text-center banner p-3 pb-5">
-    <div class="container p-5 pb-5">
-      <div class="row p-5 pb-5">
-        <div class="col-md-8">
+    <div class="container pb-5">
+      <div class="row pb-5">
+        <div class="col-md-8 col-12 pb-5">
           <div class="card card-custom p-5">
             <h5 class="authBtn">{{ event.title }}</h5>
             <hr />
@@ -13,7 +13,7 @@
           </div>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-4 col-12">
           <div class="card card-custom p-5">
             <h5 class="authBtn">Event Ticket</h5>
             <hr />
@@ -38,9 +38,6 @@
 import { mapGetter } from "vuex";
 export default {
   name: "Ticket",
-  data() {
-    return {};
-  },
   computed: {
     event() {
       return this.$store.getters.getEvent(this.$route.params.id);
