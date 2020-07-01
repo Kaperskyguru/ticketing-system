@@ -8,9 +8,6 @@ export default {
     getUserEvents(id) {
         return Http.get(`users/${id}${resource}`);
     },
-    getProduct(id) {
-        return Http.get(`${resource}/${id}`);
-    },
     create(payload) {
         return Http.post(`${resource}`, payload);
     },
