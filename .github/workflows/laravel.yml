@@ -33,4 +33,5 @@ jobs:
         APP_ENV: local
       run: |
         php artisan migrate --seed
+        php artisan passport:install
         vendor/bin/phpunit
